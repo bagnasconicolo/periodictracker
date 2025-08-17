@@ -1,0 +1,15 @@
+# Serve files from static and uploads directories
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Serve static files as-is
+    RewriteRule ^static/(.*)$ static/$1 [L]
+
+    # Serve uploaded files as-is
+    RewriteRule ^uploads/(.*)$ uploads/$1 [L]
+
+    # Ensure other routes are handled by index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>

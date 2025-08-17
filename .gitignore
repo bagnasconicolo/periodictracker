@@ -1,0 +1,26 @@
+# Database configuration (contains sensitive credentials)
+www/html/db.php
+
+# User uploads directory (too large for git, handle separately)
+www/html/uploads/
+!www/html/uploads/.gitkeep
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
+www/html/debug.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Environment files
+.env
+config.local.php

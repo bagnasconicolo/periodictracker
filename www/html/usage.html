@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PeriodicTracker - Usage Guide</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100vh;
+      box-sizing: border-box;
+      background: linear-gradient(135deg, #fdfdfd 0%, #e8f0fd 100%);
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      text-align: center;
+    }
+    .page-container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    #topBanner img {
+      max-width: 100%;
+      border-radius: 4px;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    h1, h2, h3 {
+      margin-top: 0;
+    }
+    p {
+      text-align: left;
+      line-height: 1.5;
+    }
+    ul {
+      text-align: left;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div id="topBanner">
+      <img src="/static/guidebanner.png" alt="Usage Guide Banner">
+    </div>
+    <h1>PeriodicChiCubo - Usage Guide</h1>
+    <p>
+      Welcome to <strong>PeriodicChiCubo</strong>—your all-in-one platform for managing your personal elemental collection! This guide will walk you through every feature of the website.
+    </p>
+    <h2>1. Getting Started</h2>
+    <ul>
+      <li>
+        <strong>Login/Registration:</strong> At the top of the main page you will find fields for username and password. Enter your desired credentials and click “Login &amp; Load.” If you are new, your account is created automatically.
+      </li>
+      <li>
+        Once logged in, your username is displayed and your personal data is loaded. You can also update your profile later on the “Profile Settings” page.
+      </li>
+    </ul>
+    
+    <h2>2. The Periodic Table Interface</h2>
+    <ul>
+      <li>
+        The main page displays an interactive periodic table. Each element is represented by its symbol; hover over an element to see its name and a brief description.
+      </li>
+      <li>
+        <strong>Click an Element:</strong> Clicking an element opens its details panel where you can update its status (such as Pure, Representative, Alloy, or Wish), add descriptions, and upload an image.
+      </li>
+      <li>
+        Use the <em>Quick Status</em> mode (toggle checkbox and dropdown) to quickly assign a status without opening the details panel.
+      </li>
+      <li>
+        You can also enable the <em>Gallery View</em> to display element images as backgrounds on the table.
+      </li>
+    </ul>
+    
+    <h2>3. Editing Your Collection</h2>
+    <ul>
+      <li>
+        In the details panel, you can update an element’s <strong>status</strong>, <strong>description</strong>, <strong>quantity</strong> (in grams), and <strong>purity</strong> (in percentage).
+      </li>
+      <li>
+        You can upload an image for an element either by entering an image URL or by using the file upload (max ~2MB). The image will appear in the preview area and is clickable to view full size.
+      </li>
+    </ul>
+    
+    <h2>4. Managing Samples</h2>
+    <ul>
+      <li>
+        For each element, you may add <strong>sample images</strong>—for example, close-up photos or different views. In the samples section of an element’s details panel, click “Add Sample” to open the sample form.
+      </li>
+      <li>
+        In the sample form, specify the sample’s status, description, quantity, purity, and either an image URL or upload a sample image file. Sample images appear to the left of the text and are clickable.
+      </li>
+      <li>
+        If you have previously added samples, Edit and Delete buttons appear next to each sample (visible only to you). Use these to update or remove samples.
+      </li>
+    </ul>
+    
+    <h2>5. Comments</h2>
+    <ul>
+      <li>
+        You can post comments on any element. The comment section is always visible.
+      </li>
+      <li>
+        <strong>Important:</strong> To post a comment you must be logged in. If you are not logged in, an inline login form appears right in the comment section.
+      </li>
+      <li>
+        Once logged in, you can type your comment and click “Post Comment.” In the comments list, non‑"Guest" usernames are clickable. Clicking a username opens their public profile info (which shows their collection stats and achievements).
+      </li>
+    </ul>
+    
+    <h2>6. Profile &amp; Settings</h2>
+    <ul>
+      <li>
+        The “Profile Settings” page allows you to update your display name, email, bio, and profile image. You can also change your password here.
+      </li>
+      <li>
+        Your public profile (accessible by other users) displays your achievements and collection statistics (the counts of Pure, Representative, and Alloy statuses).
+      </li>
+    </ul>
+    
+    <h2>7. Media Library</h2>
+    <ul>
+      <li>
+        The “Media Library” page shows all your uploaded images. You can view, delete, and manage your media files.
+      </li>
+    </ul>
+    
+    <h2>8. User Directory &amp; Changelog</h2>
+    <ul>
+      <li>
+        The “User Directory” page lists all public profiles along with summary statistics for each user’s collection.
+      </li>
+      <li>
+        The “Changelog” page provides a history of updates and improvements to the website.
+      </li>
+    </ul>
+    
+    <h2>9. Additional Features</h2>
+    <ul>
+      <li>
+        <strong>Achievements:</strong> As you add or update your collection, you earn badges (e.g. “All Alkali Metals”, “All Noble Gases”, “First 10 Elements”) that are displayed in your public profile.
+      </li>
+      <li>
+        <strong>Sticky Periodic Table:</strong> Use the “Stick Table” button to fix the periodic table on the screen while you scroll.
+      </li>
+      <li>
+        <strong>Gallery View:</strong> Toggle gallery view to have your element images displayed as backgrounds on the table.
+      </li>
+    </ul>
+    
+    <h2>10. Navigation</h2>
+    <ul>
+      <li>
+        Use the top menu links to navigate between pages: User Directory, Profile Settings, About, Usage Guide, Media Library, and Changelog.
+      </li>
+      <li>
+        Click “Go Back to Main” at the bottom of this page to return to the main periodic table interface.
+      </li>
+    </ul>
+    
+    <p>
+      <a href="/">Go Back to Main</a>
+    </p>
+    
+    <h3>Need Help?</h3>
+    <p>
+      For further assistance or feedback, please contact the site administrator or check out our <a href="/changelog">Changelog</a> for recent updates.
+    </p>
+  </div>
+</body>
+</html>

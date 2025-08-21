@@ -25,44 +25,6 @@
       padding: 10px;
       max-width: 100vw;
     }
-    /* DARK MODE overrides */
-    body.dark-mode {
-      background: #1e1e1e;
-      color: #ccc;
-    }
-    body.dark-mode a {
-      color: #87cefa;
-    }
-    body.dark-mode button {
-      background: #444;
-      color: #eee;
-    }
-    body.dark-mode input,
-    body.dark-mode select,
-    body.dark-mode textarea {
-      background: #555;
-      color: #eee;
-      border: 1px solid #777;
-    }
-    .dark-mode .left-column,
-    .dark-mode .details-panel {
-      background: #333;
-      border-color: #555;
-    }
-    .dark-mode .periodic-container {
-      background: #2a2a2a;
-      border-color: #444;
-    }
-    .dark-mode #menuBar {
-      background: #222;
-      border-color: #444;
-    }
-    .dark-mode .comment-badge {
-      background-color: #bb4444;
-    }
-    .dark-mode .sample-badge {
-      background-color: #44bb44;
-    }
     /* NORMAL MODE styles */
     .left-column {
       flex: 1;
@@ -197,6 +159,8 @@
       border: 1px solid #ddd;
       border-radius: 4px;
       padding: 10px;
+      overflow: hidden; /* Prevent overflow */
+      max-height: calc(100vh - 200px); /* Prevent container from exceeding viewport */
     }
     .sticky-fixed {
       position: fixed;
@@ -343,6 +307,8 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      overflow-y: auto; /* Allow scrolling if content exceeds */
+      max-height: calc(100vh - 180px); /* Prevent panel from exceeding viewport */
     }
     .edit-mode {
       border: 2px solid #ffbb33 !important;
@@ -603,9 +569,6 @@
       margin-left: 8px;
     }
     
-    .dark-mode .help-text {
-      color: #999;
-    }
     
     /* Focus indicators */
     button:focus,
@@ -919,7 +882,6 @@
       <a href="/usage">Usage Guide</a>
       <a href="/media">Media Library</a>
       <a href="/changelog">Changelog</a>
-      <button id="darkModeToggle">Dark Mode</button>
     </div>
     <div id="userStatusBar">Not logged in.</div>
     <div id="topControls" role="main" aria-label="Control Panel">
@@ -937,9 +899,6 @@
         <label for="viewUsernameInput" class="sr-only">View User</label>
         <input type="text" id="viewUsernameInput" placeholder="View user (public)" aria-label="Username to view public collection">
         <button id="viewBtn" class="btn-primary">View</button>
-        <label for="searchInput" class="sr-only">Search Elements</label>
-        <input type="text" id="searchInput" placeholder="Search (symbol/name)" aria-label="Search elements by symbol or name" title="Search elements (Ctrl+F)">
-        <button id="searchBtn" class="btn-warning">Search</button>
         <button id="viewOwnerInfoBtn" class="btn-secondary" title="View information about the current collection owner">Author Info</button>
       </div>
       <div class="row">
@@ -1171,11 +1130,6 @@
         if (modal && modal.style.display === 'block') {
           modal.style.display = 'none';
         }
-      }
-      // Focus search on Ctrl/Cmd + F
-      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-        e.preventDefault();
-        document.getElementById('searchInput').focus();
       }
     });
     

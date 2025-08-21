@@ -14,8 +14,31 @@
       font-family: "Segoe UI", Tahoma, Arial, sans-serif;
       text-align: center;
     }
+    
+    /* Menu Bar */
+    #menuBar {
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-weight: bold;
+      font-style: italic;
+      background: #474747;
+      color: #fff;
+      text-align: center;
+    }
+    #menuBar a {
+      margin-right: 10px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    #menuBar a:hover {
+      color: #ffcc00;
+    }
+    
     .page-container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 40px auto;
       background: #fff;
       border-radius: 6px;
@@ -40,9 +63,161 @@
     }
     th, td {
       border: 1px solid #ddd;
-      padding: 8px;
+      padding: 12px;
+      text-align: center;
+      vertical-align: top;
+    }
+    
+    /* User name styling */
+    .username-cell {
+      position: relative;
+    }
+    .username-link {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      display: block;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+    .username-link:hover {
+      background-color: #f0f8ff;
+      text-decoration: underline;
+    }
+    
+    /* Award badges */
+    .award-badges {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
+    }
+    .achievement-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #ddd;
+      background: #f9f9f9;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: bold;
+      title: attr(title);
+    }
+    
+    /* User info popup */
+    #userInfoPopup {
+      position: absolute;
+      background: #fff;
+      border: 2px solid #333;
+      border-radius: 6px;
+      padding: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      z-index: 1000;
+      display: none;
+      min-width: 300px;
+      max-width: 400px;
+      text-align: left;
+    }
+    
+    #userInfoPopup img {
+      max-width: 100%;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    
+    .close-popup {
+      float: right;
+      background: #999;
+      border: none;
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    
+    .close-popup:hover {
+      background: #666;
+    }
+    
+    /* Gallery mode styles */
+    .gallery-view {
+      display: none;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .user-card {
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .user-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .user-card h3 {
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+    
+    .user-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 15px 0;
+    }
+    
+    .stat-item {
       text-align: center;
     }
+    
+    .stat-number {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #007bff;
+    }
+    
+    .stat-label {
+      font-size: 0.8em;
+      color: #666;
+      text-transform: uppercase;
+    }
+    
+    /* View toggle */
+    .view-toggle {
+      margin: 20px 0;
+    }
+    
+    .toggle-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0 5px;
+    }
+    
+    .toggle-btn:hover {
+      background: #0056b3;
+    }
+    
+    .toggle-btn.active {
+      background: #28a745;
+    }
+    
     a {
       color: #007bff;
       text-decoration: none;
@@ -59,14 +234,31 @@
       <img src="/static/usdirbanner.png" alt="Directory Banner">
     </div>
 
-    <h1>User Directory</h1>
-    <p>Below is a list of users who have allowed their profile to be public:</p>
+    <!-- Menu Bar -->
+    <div id="menuBar">
+      <a href="/">Main</a>
+      <a href="/list">User Directory</a>
+      <a href="/profile">Profile Settings</a>
+      <a href="/about">About</a>
+      <a href="/usage">Usage Guide</a>
+      <a href="/media">Media Library</a>
+      <a href="/changelog">Changelog</a>
+    </div>
 
+    <h1>User Directory</h1>
+    <p>Below is a list of users who have allowed their profile to be public. Click on any username to view their collection:</p>
+
+    <!-- View Toggle -->
+    <div class="view-toggle">
+      <button class="toggle-btn active" id="tableViewBtn">Table View</button>
+      <button class="toggle-btn" id="galleryViewBtn">Gallery View</button>
+    </div>
+
+    <!-- Table View -->
     <table id="userTable">
       <thead>
         <tr>
-          <th>Display Name</th>
-          <th>Username</th>
+          <th>Collector</th>
           <th>Pure</th>
           <th>Rep</th>
           <th>Alloy</th>
@@ -76,38 +268,226 @@
       <tbody></tbody>
     </table>
 
+    <!-- Gallery View -->
+    <div class="gallery-view" id="galleryView"></div>
+
     <p style="margin-top:20px;">
       <a href="/">← Back to Main</a>
     </p>
   </div>
 
+  <!-- User Info Popup -->
+  <div id="userInfoPopup">
+    <button class="close-popup" onclick="hideUserPopup()">×</button>
+    <div id="userInfoContent"></div>
+  </div>
+
   <script>
+  let usersData = [];
+  let isTableView = true;
+
+  // Load users with enhanced data
   async function loadUsers(){
     try{
-      const resp=await fetch('/api/listusers');
-      const data=await resp.json();
-      if(data.status==='success'){
-        const tb=document.querySelector('#userTable tbody');
-        tb.innerHTML='';
-        data.users.forEach(u=>{
-          const tr=document.createElement('tr');
-          tr.innerHTML=`
-            <td>${u.display_name}</td>
-            <td>${u.username}</td>
-            <td>${u.pure_count}</td>
-            <td>${u.rep_count}</td>
-            <td>${u.alloy_count}</td>
-            <td>${u.total_collected}</td>
-          `;
-          tb.appendChild(tr);
-        });
+      const resp = await fetch('/api/listusers');
+      const data = await resp.json();
+      if(data.status === 'success'){
+        usersData = data.users || [];
+        // Sort by total collected (descending)
+        usersData.sort((a, b) => (b.total_collected || 0) - (a.total_collected || 0));
+        renderUsers();
       } else {
-        alert("Error loading user list: "+(data.message||'Unknown'));
+        console.error("Error loading user list: " + (data.message || 'Unknown'));
+        document.querySelector('#userTable tbody').innerHTML = '<tr><td colspan="5">Error loading users</td></tr>';
       }
-    }catch(err){
-      alert("Request failed: "+err);
+    } catch(err) {
+      console.error("Request failed: " + err);
+      document.querySelector('#userTable tbody').innerHTML = '<tr><td colspan="5">Failed to load users</td></tr>';
     }
   }
+
+  // Render users in current view mode
+  function renderUsers() {
+    if (isTableView) {
+      renderTableView();
+    } else {
+      renderGalleryView();
+    }
+  }
+
+  // Render table view
+  function renderTableView() {
+    const tbody = document.querySelector('#userTable tbody');
+    tbody.innerHTML = '';
+    
+    usersData.forEach(user => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="username-cell">
+          <div>
+            <div class="username-link" 
+                 onclick="viewUserCollection('${user.username}')" 
+                 onmouseenter="showUserPopup(event, '${user.username}')"
+                 onmouseleave="hideUserPopup()">
+              <strong>${user.display_name || user.username}</strong>
+              <div style="font-size: 0.9em; color: #666;">@${user.username}</div>
+            </div>
+            <div class="award-badges">
+              ${generateAwardBadges(user)}
+            </div>
+          </div>
+        </td>
+        <td><strong style="color: #28a745;">${user.pure_count || 0}</strong></td>
+        <td><strong style="color: #ffc107;">${user.rep_count || 0}</strong></td>
+        <td><strong style="color: #17a2b8;">${user.alloy_count || 0}</strong></td>
+        <td><strong style="color: #007bff; font-size: 1.1em;">${user.total_collected || 0}</strong></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Render gallery view
+  function renderGalleryView() {
+    const gallery = document.getElementById('galleryView');
+    gallery.innerHTML = '';
+    
+    usersData.forEach(user => {
+      const card = document.createElement('div');
+      card.className = 'user-card';
+      card.innerHTML = `
+        <h3>${user.display_name || user.username}</h3>
+        <div style="color: #666; margin-bottom: 15px;">@${user.username}</div>
+        <div class="user-stats">
+          <div class="stat-item">
+            <div class="stat-number" style="color: #28a745;">${user.pure_count || 0}</div>
+            <div class="stat-label">Pure</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" style="color: #ffc107;">${user.rep_count || 0}</div>
+            <div class="stat-label">Rep</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" style="color: #17a2b8;">${user.alloy_count || 0}</div>
+            <div class="stat-label">Alloy</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">${user.total_collected || 0}</div>
+            <div class="stat-label">Total</div>
+          </div>
+        </div>
+        <div class="award-badges" style="justify-content: center; margin: 15px 0;">
+          ${generateAwardBadges(user)}
+        </div>
+        <button onclick="viewUserCollection('${user.username}')" style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+          View Collection
+        </button>
+      `;
+      gallery.appendChild(card);
+    });
+  }
+
+  // Generate award badges based on collection stats
+  function generateAwardBadges(user) {
+    const badges = [];
+    const total = user.total_collected || 0;
+    const pure = user.pure_count || 0;
+    const rep = user.rep_count || 0;
+    const alloy = user.alloy_count || 0;
+
+    // Milestone badges
+    if (total >= 100) badges.push('<span class="achievement-badge" style="background: #ffd700; color: #000;" title="Century Club - 100+ Elements">💯</span>');
+    else if (total >= 50) badges.push('<span class="achievement-badge" style="background: #c0c0c0;" title="Half Century - 50+ Elements">50</span>');
+    else if (total >= 25) badges.push('<span class="achievement-badge" style="background: #cd7f32;" title="Quarter Century - 25+ Elements">25</span>');
+
+    // Purity badges
+    if (pure >= 50) badges.push('<span class="achievement-badge" style="background: #28a745; color: white;" title="Pure Master - 50+ Pure Elements">🧪</span>');
+    else if (pure >= 25) badges.push('<span class="achievement-badge" style="background: #20c997; color: white;" title="Pure Collector - 25+ Pure Elements">⚗️</span>');
+
+    // Representative badges  
+    if (rep >= 30) badges.push('<span class="achievement-badge" style="background: #ffc107; color: #000;" title="Representative Expert - 30+ Representative Elements">⭐</span>');
+
+    // Alloy badges
+    if (alloy >= 20) badges.push('<span class="achievement-badge" style="background: #17a2b8; color: white;" title="Alloy Specialist - 20+ Alloy Elements">🔗</span>');
+
+    // Special badges
+    if (pure > 0 && rep > 0 && alloy > 0) badges.push('<span class="achievement-badge" style="background: #6f42c1; color: white;" title="Diversified Collector">🎯</span>');
+    
+    return badges.join('');
+  }
+
+  // View user collection
+  function viewUserCollection(username) {
+    window.open(`/?view=${encodeURIComponent(username)}`, '_blank');
+  }
+
+  // Show user info popup on hover
+  async function showUserPopup(event, username) {
+    try {
+      const response = await fetch(`/api/user/${username}`);
+      const data = await response.json();
+      
+      if (data.status === 'success') {
+        const user = data.user;
+        const popup = document.getElementById('userInfoPopup');
+        const content = document.getElementById('userInfoContent');
+        
+        content.innerHTML = `
+          <h3>${user.display_name || user.username}</h3>
+          <p><strong>Username:</strong> @${user.username}</p>
+          ${user.bio ? `<p><strong>Bio:</strong> ${user.bio}</p>` : ''}
+          ${user.profile_image_url ? `<img src="${user.profile_image_url}" alt="Profile" style="max-width: 150px;">` : ''}
+          <div style="margin-top: 10px;">
+            <strong>Collection Stats:</strong><br>
+            🧪 Pure: ${user.pure_count || 0}<br>
+            ⭐ Representative: ${user.rep_count || 0}<br>
+            🔗 Alloy: ${user.alloy_count || 0}<br>
+            📊 Total: ${user.total_collected || 0}
+          </div>
+        `;
+        
+        popup.style.left = event.pageX + 10 + 'px';
+        popup.style.top = event.pageY + 10 + 'px';
+        popup.style.display = 'block';
+      }
+    } catch (err) {
+      console.error('Failed to load user info:', err);
+    }
+  }
+
+  // Hide user info popup
+  function hideUserPopup() {
+    document.getElementById('userInfoPopup').style.display = 'none';
+  }
+
+  // Toggle between table and gallery view
+  function toggleView(showTable) {
+    isTableView = showTable;
+    
+    const tableView = document.getElementById('userTable');
+    const galleryView = document.getElementById('galleryView');
+    const tableBtn = document.getElementById('tableViewBtn');
+    const galleryBtn = document.getElementById('galleryViewBtn');
+    
+    if (showTable) {
+      tableView.style.display = 'table';
+      galleryView.style.display = 'none';
+      tableBtn.classList.add('active');
+      galleryBtn.classList.remove('active');
+    } else {
+      tableView.style.display = 'none';
+      galleryView.style.display = 'grid';
+      tableBtn.classList.remove('active');
+      galleryBtn.classList.add('active');
+    }
+    
+    renderUsers();
+  }
+
+  // Event listeners
+  document.getElementById('tableViewBtn').addEventListener('click', () => toggleView(true));
+  document.getElementById('galleryViewBtn').addEventListener('click', () => toggleView(false));
+
+  // Load users on page load
   window.addEventListener('DOMContentLoaded', loadUsers);
   </script>
 </body>

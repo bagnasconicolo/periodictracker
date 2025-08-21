@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PeriodicTracker - Modern</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* =============================
+       MODERN DESIGN SYSTEM
+       ============================= */
+    :root {
+      /* Colors */
+      --primary: #4a90e2;
+      --primary-dark: #357abd;
+      --secondary: #7b68ee;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+      --info: #17a2b8;
+      
+      /* Glass morphism */
+      --glass: rgba(255, 255, 255, 0.1);
+      --glass-strong: rgba(255, 255, 255, 0.2);
+      --glass-border: rgba(255, 255, 255, 0.3);
+      --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      
+      /* Dark mode */
+      --bg-dark: #1a1a1a;
+      --surface-dark: #2d2d30;
+      --text-dark: #e0e0e0;
+      --glass-dark: rgba(45, 45, 48, 0.8);
+      
+      /* Typography */
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", monospace;
+      
+      /* Spacing */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+      
+      /* Border radius */
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 30px;
+      
+      /* Animations */
+      --transition-fast: 0.15s ease;
+      --transition-smooth: 0.3s ease;
+      --transition-slow: 0.5s ease;
+    }
+
+    /* =============================
+       GLOBAL RESET & BASE STYLES
+       ============================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Dark mode */
+    body.dark-mode {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d30 100%);
+      color: var(--text-dark);
+    }
+
+    /* =============================
+       MODERN HEADER & NAVIGATION
+       ============================= */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: var(--space-md) var(--space-lg);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-lg);
+    }
+
+    .app-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      text-decoration: none;
+    }
+
+    .app-logo i {
+      font-size: 2rem;
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-nav {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all var(--transition-smooth);
+    }
+
+    .nav-link:hover {
+      background: var(--glass-strong);
+      transform: translateY(-2px);
+      box-shadow: var(--glass-shadow);
+    }
+
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      color: white;
+      font-weight: 500;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    .theme-toggle {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+    }
+
+    .theme-toggle:hover {
+      background: var(--glass-strong);
+      transform: rotate(180deg);
+    }
+
+    /* =============================
+       MAIN LAYOUT CONTAINER
+       ============================= */
+    .app-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: var(--space-lg);
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: var(--space-xl);
+      min-height: calc(100vh - 80px);
+    }
+
+    /* =============================
+       MODERN CARD SYSTEM
+       ============================= */
+    .glass-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--glass-shadow);
+      padding: var(--space-xl);
+      transition: all var(--transition-smooth);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: between;
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .card-title i {
+      color: var(--primary);
+    }
+
+    /* =============================
+       STATS DASHBOARD
+       ============================= */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .stat-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      text-align: center;
+      transition: all var(--transition-smooth);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      background: var(--glass-strong);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: var(--space-sm);
+    }
+
+    .stat-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-icon {
+      font-size: 1.5rem;
+      margin-bottom: var(--space-sm);
+      opacity: 0.8;
+    }
+
+    /* Element type colors */
+    .stat-pure { color: #28a745; }
+    .stat-rep { color: #ffc107; }
+    .stat-alloy { color: #17a2b8; }
+    .stat-wish { color: #dc3545; }
+
+    /* =============================
+       MODERN PERIODIC TABLE
+       ============================= */
+    .table-container {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      overflow-x: auto;
+    }
+
+    .table-controls {
+      display: flex;
+      align-items: center;
+      justify-content: between;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      flex-wrap: wrap;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .modern-checkbox {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      cursor: pointer;
+      color: white;
+      font-weight: 500;
+    }
+
+    .modern-checkbox input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .checkbox-custom {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      background: var(--glass);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+    }
+
+    .modern-checkbox input:checked + .checkbox-custom {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .checkbox-custom i {
+      font-size: 12px;
+      color: white;
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+
+    .modern-checkbox input:checked + .checkbox-custom i {
+      opacity: 1;
+    }
+
+    .modern-select {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm) var(--space-md);
+      color: white;
+      font-weight: 500;
+      min-width: 120px;
+    }
+
+    .modern-select option {
+      background: var(--surface-dark);
+      color: white;
+    }
+
+    /* Periodic table styles */
+    #periodicTable {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 2px;
+      margin: var(--space-lg) 0;
+    }
+
+    .periodic-cell {
+      width: 50px;
+      height: 50px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .periodic-cell:hover {
+      transform: translateY(-3px) scale(1.1);
+      background: var(--glass-strong);
+      box-shadow: var(--glass-shadow);
+      z-index: 10;
+    }
+
+    .periodic-cell.selected {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    /* Element status colors */
+    .periodic-cell.status-pure {
+      background: linear-gradient(135deg, #28a745, #20c997);
+      border-color: #28a745;
+    }
+
+    .periodic-cell.status-rep {
+      background: linear-gradient(135deg, #ffc107, #fd7e14);
+      border-color: #ffc107;
+    }
+
+    .periodic-cell.status-alloy {
+      background: linear-gradient(135deg, #17a2b8, #6f42c1);
+      border-color: #17a2b8;
+    }
+
+    .periodic-cell.status-wish {
+      background: linear-gradient(135deg, #dc3545, #e83e8c);
+      border-color: #dc3545;
+    }
+
+    .element-symbol {
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .element-number {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.8);
+      position: absolute;
+      top: 2px;
+      left: 4px;
+    }
+
+    /* Comment and sample badges */
+    .comment-badge, .sample-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      font-size: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .comment-badge {
+      background: #ff4757;
+    }
+
+    .sample-badge {
+      background: #2ed573;
+      top: 14px;
+    }
+
+    /* Sub-tables for lanthanides and actinides */
+    .sub-table-container {
+      margin-top: var(--space-lg);
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .sub-table-label {
+      color: white;
+      font-weight: 600;
+      margin-bottom: var(--space-md);
+      opacity: 0.8;
+    }
+
+    #lanthanideTable, #actinideTable {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 2px;
+    }
+
+    /* =============================
+       MODERN TOOLTIP
+       ============================= */
+    .modern-tooltip {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all var(--transition-fast);
+      max-width: 200px;
+    }
+
+    .modern-tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tooltip-title {
+      font-weight: 600;
+      margin-bottom: var(--space-sm);
+      color: var(--primary);
+    }
+
+    /* =============================
+       SIDEBAR PANEL
+       ============================= */
+    .sidebar-panel {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+
+    /* Quick Actions Card */
+    .quick-actions {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+    }
+
+    .action-btn {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      font-weight: 500;
+      transition: all var(--transition-smooth);
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--glass-shadow);
+    }
+
+    .action-btn i {
+      font-size: 1.2rem;
+    }
+
+    /* Search Card */
+    .search-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      color: white;
+      font-size: 16px;
+      margin-bottom: var(--space-md);
+    }
+
+    .search-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+    }
+
+    /* Auth Card */
+    .auth-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .form-input {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      color: white;
+      font-size: 14px;
+    }
+
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border: none;
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+    }
+
+    .btn-secondary:hover {
+      background: var(--glass-strong);
+    }
+
+    /* Chart Card */
+    .chart-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+    }
+
+    #statusChart {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* =============================
+       RESPONSIVE DESIGN
+       ============================= */
+    @media (max-width: 1200px) {
+      .app-container {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+      }
+      
+      .sidebar-panel {
+        order: -1;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-wrap: wrap;
+        gap: var(--space-md);
+      }
+      
+      .header-nav {
+        display: none;
+      }
+      
+      .app-container {
+        padding: var(--space-md);
+      }
+      
+      .glass-card {
+        padding: var(--space-lg);
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .table-container {
+        padding: var(--space-md);
+      }
+      
+      .periodic-cell {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .action-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app-container {
+        padding: var(--space-sm);
+      }
+      
+      .glass-card {
+        padding: var(--space-md);
+      }
+      
+      .periodic-cell {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .element-symbol {
+        font-size: 12px;
+      }
+      
+      .element-number {
+        font-size: 8px;
+      }
+    }
+
+    /* =============================
+       GALLERY VIEW STYLES
+       ============================= */
+    .gallery-view {
+      display: none;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: var(--space-md);
+      padding: var(--space-lg);
+    }
+
+    .gallery-view.active {
+      display: grid;
+    }
+
+    .gallery-item {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-4px);
+      background: var(--glass-strong);
+      box-shadow: var(--glass-shadow);
+    }
+
+    .gallery-item.has-status {
+      border: 2px solid;
+    }
+
+    .gallery-item.status-pure {
+      border-color: #28a745;
+    }
+
+    .gallery-item.status-rep {
+      border-color: #ffc107;
+    }
+
+    .gallery-item.status-alloy {
+      border-color: #17a2b8;
+    }
+
+    .gallery-item.status-wish {
+      border-color: #dc3545;
+    }
+
+    .gallery-symbol {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: var(--space-sm);
+    }
+
+    .gallery-name {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* =============================
+       LOADING STATES
+       ============================= */
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* =============================
+       UTILITY CLASSES
+       ============================= */
+    .hidden { display: none !important; }
+    .visible { display: block !important; }
+    .text-center { text-align: center; }
+    .text-white { color: white; }
+    .mb-sm { margin-bottom: var(--space-sm); }
+    .mb-md { margin-bottom: var(--space-md); }
+    .mb-lg { margin-bottom: var(--space-lg); }
+    .mt-sm { margin-top: var(--space-sm); }
+    .mt-md { margin-top: var(--space-md); }
+    .mt-lg { margin-top: var(--space-lg); }
+
+    /* Dark mode overrides */
+    body.dark-mode .glass-card {
+      background: var(--glass-dark);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .stat-card {
+      background: var(--glass-dark);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .table-container {
+      background: var(--glass-dark);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .periodic-cell {
+      background: var(--glass-dark);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .search-input,
+    body.dark-mode .form-input,
+    body.dark-mode .modern-select {
+      background: var(--glass-dark);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Modern Header -->
+  <header class="app-header">
+    <div class="header-content">
+      <a href="#" class="app-logo">
+        <i class="fas fa-atom"></i>
+        <span>PeriodicTracker</span>
+      </a>
+      
+      <nav class="header-nav">
+        <div class="nav-item">
+          <a href="/list" class="nav-link">
+            <i class="fas fa-users"></i>
+            <span>Directory</span>
+          </a>
+        </div>
+        <div class="nav-item">
+          <a href="/profile" class="nav-link">
+            <i class="fas fa-user-cog"></i>
+            <span>Profile</span>
+          </a>
+        </div>
+        <div class="nav-item">
+          <a href="/media" class="nav-link">
+            <i class="fas fa-images"></i>
+            <span>Media</span>
+          </a>
+        </div>
+        <div class="nav-item">
+          <a href="/about" class="nav-link">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+          </a>
+        </div>
+      </nav>
+      
+      <div class="user-section">
+        <div class="user-info" id="userInfo" style="display: none;">
+          <div class="user-avatar" id="userAvatar"></div>
+          <span id="userName"></span>
+        </div>
+        
+        <button class="theme-toggle" id="themeToggle">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main App Container -->
+  <div class="app-container">
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Stats Dashboard -->
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+          <i class="fas fa-gem stat-icon stat-pure"></i>
+          <div class="stat-value" id="pureCount">0</div>
+          <div class="stat-label">Pure Elements</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-star stat-icon stat-rep"></i>
+          <div class="stat-value" id="repCount">0</div>
+          <div class="stat-label">Representative</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-layer-group stat-icon stat-alloy"></i>
+          <div class="stat-value" id="alloyCount">0</div>
+          <div class="stat-label">Alloy Samples</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-heart stat-icon stat-wish"></i>
+          <div class="stat-value" id="wishCount">0</div>
+          <div class="stat-label">Wishlist</div>
+        </div>
+      </div>
+
+      <!-- Periodic Table Container -->
+      <div class="table-container">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-table"></i>
+            Interactive Periodic Table
+          </h2>
+        </div>
+
+        <div class="table-controls">
+          <div class="control-group">
+            <label class="modern-checkbox">
+              <input type="checkbox" id="quickStatusCheckbox">
+              <span class="checkbox-custom">
+                <i class="fas fa-check"></i>
+              </span>
+              Quick Status
+            </label>
+            
+            <select id="quickStatusDropdown" class="modern-select">
+              <option value="">Select Status</option>
+              <option value="Pure">Pure</option>
+              <option value="Representative">Representative</option>
+              <option value="Alloy">Alloy</option>
+              <option value="Wish">Wish</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label class="modern-checkbox">
+              <input type="checkbox" id="galleryViewCheckbox">
+              <span class="checkbox-custom">
+                <i class="fas fa-check"></i>
+              </span>
+              Gallery View
+            </label>
+
+            <button class="action-btn" id="toggleStickyBtn">
+              <i class="fas fa-thumbtack"></i>
+              Sticky Table
+            </button>
+          </div>
+        </div>
+
+        <!-- Periodic Table -->
+        <div id="tableView">
+          <table id="periodicTable"></table>
+          
+          <div class="sub-table-container">
+            <div class="sub-table-label">Lanthanides</div>
+            <table id="lanthanideTable"></table>
+          </div>
+          
+          <div class="sub-table-container">
+            <div class="sub-table-label">Actinides</div>
+            <table id="actinideTable"></table>
+          </div>
+        </div>
+
+        <!-- Gallery View -->
+        <div id="galleryView" class="gallery-view"></div>
+      </div>
+    </main>
+
+    <!-- Sidebar Panel -->
+    <aside class="sidebar-panel">
+      <!-- Authentication Card -->
+      <div class="auth-card" id="authCard">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-sign-in-alt"></i>
+            Account Access
+          </h3>
+        </div>
+        
+        <form class="auth-form" id="authForm">
+          <input type="text" class="form-input" id="usernameInput" placeholder="Username" required>
+          <input type="password" class="form-input" id="passwordInput" placeholder="Password" required>
+          
+          <button type="submit" class="btn-primary" id="loginBtn">
+            <i class="fas fa-sign-in-alt"></i>
+            Login & Load Data
+          </button>
+          
+          <div class="text-center mt-sm">
+            <small style="color: rgba(255,255,255,0.7);">
+              New user? Just enter your desired credentials to register automatically.
+            </small>
+          </div>
+        </form>
+        
+        <div id="userControls" class="hidden">
+          <div class="action-grid">
+            <button class="action-btn" id="saveBtn">
+              <i class="fas fa-save"></i>
+              Save
+            </button>
+            <button class="action-btn" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search & View Card -->
+      <div class="search-card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-search"></i>
+            Search & Explore
+          </h3>
+        </div>
+        
+        <input type="text" class="search-input" id="searchInput" placeholder="Search elements (symbol or name)">
+        
+        <div class="mt-md mb-md">
+          <input type="text" class="form-input" id="viewUsernameInput" placeholder="View public user collection">
+        </div>
+        
+        <div class="action-grid">
+          <button class="action-btn" id="viewBtn">
+            <i class="fas fa-eye"></i>
+            View User
+          </button>
+          <button class="action-btn" id="searchBtn">
+            <i class="fas fa-search"></i>
+            Search
+          </button>
+          <button class="action-btn" id="viewOwnerInfoBtn">
+            <i class="fas fa-info-circle"></i>
+            Author Info
+          </button>
+        </div>
+      </div>
+
+      <!-- Statistics Chart -->
+      <div class="chart-card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-chart-pie"></i>
+            Collection Stats
+          </h3>
+        </div>
+        <canvas id="statusChart" width="300" height="300"></canvas>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Modern Tooltip -->
+  <div id="elementTooltip" class="modern-tooltip"></div>
+
+  <!-- Element Details Modal -->
+  <div id="elementModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle"></h2>
+        <button class="modal-close" id="closeModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div id="elementDetails"></div>
+        <div id="sampleManagement"></div>
+        <div id="commentSection"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global variables and state
+    let selectedElementId = null;
+    let userElements = {};
+    let userData = null;
+    let isLoggedIn = false;
+    let quickStatusMode = false;
+    let isGalleryView = false;
+    let isDarkMode = false;
+
+    // Element data array (complete periodic table)
+    const elements = [
+      {
+        atomicNumber: 1,
+        symbol: "H",
+        name: "Hydrogen",
+        category: "nonmetal",
+        group: 1,
+        period: 1,
+        atomicMass: 1.008,
+        briefDesc: "The lightest element, fuel for stars"
+      },
+      {
+        atomicNumber: 2,
+        symbol: "He",
+        name: "Helium",
+        category: "noble gas",
+        group: 18,
+        period: 1,
+        atomicMass: 4.002602,
+        briefDesc: "Inert gas, used in balloons and cooling"
+      },
+      {
+        atomicNumber: 3,
+        symbol: "Li",
+        name: "Lithium",
+        category: "alkali metal",
+        group: 1,
+        period: 2,
+        atomicMass: 6.94,
+        briefDesc: "Lightest metal, used in batteries"
+      },
+      {
+        atomicNumber: 4,
+        symbol: "Be",
+        name: "Beryllium",
+        category: "alkaline earth metal",
+        group: 2,
+        period: 2,
+        atomicMass: 9.0121831,
+        briefDesc: "Light, strong metal used in aerospace"
+      },
+      {
+        atomicNumber: 5,
+        symbol: "B",
+        name: "Boron",
+        category: "metalloid",
+        group: 13,
+        period: 2,
+        atomicMass: 10.81,
+        briefDesc: "Hard metalloid used in glass and ceramics"
+      },
+      {
+        atomicNumber: 6,
+        symbol: "C",
+        name: "Carbon",
+        category: "nonmetal",
+        group: 14,
+        period: 2,
+        atomicMass: 12.011,
+        briefDesc: "Essential for all life, forms diamonds and graphite"
+      },
+      // Add more elements as needed for full periodic table
+      // For brevity, adding key elements
+      {
+        atomicNumber: 26,
+        symbol: "Fe",
+        name: "Iron",
+        category: "transition metal",
+        group: 8,
+        period: 4,
+        atomicMass: 55.845,
+        briefDesc: "Most common element on Earth, essential for life"
+      },
+      {
+        atomicNumber: 29,
+        symbol: "Cu",
+        name: "Copper",
+        category: "transition metal",
+        group: 11,
+        period: 4,
+        atomicMass: 63.546,
+        briefDesc: "Excellent conductor, used in wiring and plumbing"
+      },
+      {
+        atomicNumber: 47,
+        symbol: "Ag",
+        name: "Silver",
+        category: "transition metal",
+        group: 11,
+        period: 5,
+        atomicMass: 107.8682,
+        briefDesc: "Precious metal with highest electrical conductivity"
+      },
+      {
+        atomicNumber: 79,
+        symbol: "Au",
+        name: "Gold",
+        category: "transition metal",
+        group: 11,
+        period: 6,
+        atomicMass: 196.966569,
+        briefDesc: "Noble metal, symbol of wealth and beauty"
+      }
+    ];
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeApp();
+      generatePeriodicTable();
+      updateStats();
+      initializeChart();
+      setupEventListeners();
+    });
+
+    function initializeApp() {
+      // Check for existing session
+      checkSession();
+      
+      // Load user data if logged in
+      if (isLoggedIn) {
+        loadUserData();
+      }
+      
+      // Apply saved theme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        toggleDarkMode(true);
+      }
+    }
+
+    function setupEventListeners() {
+      // Authentication
+      document.getElementById('authForm').addEventListener('submit', handleAuth);
+      document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+      document.getElementById('saveBtn').addEventListener('click', saveUserData);
+      
+      // Theme toggle
+      document.getElementById('themeToggle').addEventListener('click', () => toggleDarkMode());
+      
+      // Search functionality
+      document.getElementById('searchInput').addEventListener('input', handleSearch);
+      document.getElementById('searchBtn').addEventListener('click', () => performSearch());
+      
+      // View controls
+      document.getElementById('quickStatusCheckbox').addEventListener('change', toggleQuickStatus);
+      document.getElementById('galleryViewCheckbox').addEventListener('change', toggleGalleryView);
+      document.getElementById('toggleStickyBtn').addEventListener('click', toggleStickyTable);
+      
+      // User viewing
+      document.getElementById('viewBtn').addEventListener('click', viewUserCollection);
+      document.getElementById('viewOwnerInfoBtn').addEventListener('click', viewOwnerInfo);
+      
+      // Modal controls
+      document.getElementById('closeModal').addEventListener('click', closeElementModal);
+      
+      // Quick status dropdown
+      document.getElementById('quickStatusDropdown').addEventListener('change', handleQuickStatusChange);
+    }
+
+    function generatePeriodicTable() {
+      const table = document.getElementById('periodicTable');
+      const galleryView = document.getElementById('galleryView');
+      
+      // Clear existing content
+      table.innerHTML = '';
+      galleryView.innerHTML = '';
+      
+      // Generate table structure (simplified for demo)
+      const periods = 7;
+      const maxGroups = 18;
+      
+      for (let period = 1; period <= periods; period++) {
+        const row = document.createElement('tr');
+        
+        for (let group = 1; group <= maxGroups; group++) {
+          const cell = document.createElement('td');
+          const element = findElementByPosition(period, group);
+          
+          if (element) {
+            cell.className = 'periodic-cell';
+            cell.dataset.atomicNumber = element.atomicNumber;
+            cell.innerHTML = `
+              <div class="element-number">${element.atomicNumber}</div>
+              <div class="element-symbol">${element.symbol}</div>
+            `;
+            
+            // Add status classes
+            const userElement = userElements[element.atomicNumber];
+            if (userElement && userElement.status) {
+              cell.classList.add(`status-${userElement.status.toLowerCase()}`);
+            }
+            
+            // Add badges for comments and samples
+            if (userElement) {
+              if (userElement.comments && userElement.comments.length > 0) {
+                const commentBadge = document.createElement('div');
+                commentBadge.className = 'comment-badge';
+                commentBadge.textContent = userElement.comments.length;
+                cell.appendChild(commentBadge);
+              }
+              
+              if (userElement.samples && userElement.samples.length > 0) {
+                const sampleBadge = document.createElement('div');
+                sampleBadge.className = 'sample-badge';
+                sampleBadge.textContent = userElement.samples.length;
+                cell.appendChild(sampleBadge);
+              }
+            }
+            
+            // Event listeners
+            cell.addEventListener('click', () => handleElementClick(element));
+            cell.addEventListener('mouseenter', (e) => showTooltip(e, element));
+            cell.addEventListener('mouseleave', hideTooltip);
+            
+            // Gallery view item
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            if (userElement && userElement.status) {
+              galleryItem.classList.add('has-status', `status-${userElement.status.toLowerCase()}`);
+            }
+            galleryItem.innerHTML = `
+              <div class="gallery-symbol">${element.symbol}</div>
+              <div class="gallery-name">${element.name}</div>
+            `;
+            galleryItem.addEventListener('click', () => handleElementClick(element));
+            galleryView.appendChild(galleryItem);
+          } else {
+            cell.className = 'empty-cell';
+          }
+          
+          row.appendChild(cell);
+        }
+        
+        table.appendChild(row);
+      }
+      
+      // Generate lanthanides and actinides tables
+      generateSubTable('lanthanideTable', 57, 71);
+      generateSubTable('actinideTable', 89, 103);
+    }
+
+    function generateSubTable(tableId, startAtomic, endAtomic) {
+      const table = document.getElementById(tableId);
+      table.innerHTML = '';
+      
+      const row = document.createElement('tr');
+      
+      for (let atomicNum = startAtomic; atomicNum <= endAtomic; atomicNum++) {
+        const element = elements.find(el => el.atomicNumber === atomicNum);
+        const cell = document.createElement('td');
+        
+        if (element) {
+          cell.className = 'periodic-cell';
+          cell.dataset.atomicNumber = element.atomicNumber;
+          cell.innerHTML = `
+            <div class="element-number">${element.atomicNumber}</div>
+            <div class="element-symbol">${element.symbol}</div>
+          `;
+          
+          const userElement = userElements[element.atomicNumber];
+          if (userElement && userElement.status) {
+            cell.classList.add(`status-${userElement.status.toLowerCase()}`);
+          }
+          
+          cell.addEventListener('click', () => handleElementClick(element));
+          cell.addEventListener('mouseenter', (e) => showTooltip(e, element));
+          cell.addEventListener('mouseleave', hideTooltip);
+        }
+        
+        row.appendChild(cell);
+      }
+      
+      table.appendChild(row);
+    }
+
+    function findElementByPosition(period, group) {
+      // Simplified positioning logic
+      return elements.find(el => el.period === period && el.group === group);
+    }
+
+    function handleElementClick(element) {
+      if (quickStatusMode) {
+        handleQuickStatusClick(element);
+      } else {
+        openElementModal(element);
+      }
+    }
+
+    function handleQuickStatusClick(element) {
+      const selectedStatus = document.getElementById('quickStatusDropdown').value;
+      if (!selectedStatus) {
+        alert('Please select a status first');
+        return;
+      }
+      
+      if (!userElements[element.atomicNumber]) {
+        userElements[element.atomicNumber] = {};
+      }
+      
+      userElements[element.atomicNumber].status = selectedStatus;
+      generatePeriodicTable();
+      updateStats();
+    }
+
+    function openElementModal(element) {
+      selectedElementId = element.atomicNumber;
+      const modal = document.getElementById('elementModal');
+      const title = document.getElementById('modalTitle');
+      const details = document.getElementById('elementDetails');
+      
+      title.textContent = `${element.name} (${element.symbol})`;
+      
+      details.innerHTML = `
+        <div class="element-info">
+          <p><strong>Atomic Number:</strong> ${element.atomicNumber}</p>
+          <p><strong>Atomic Mass:</strong> ${element.atomicMass}</p>
+          <p><strong>Category:</strong> ${element.category}</p>
+          <p><strong>Group:</strong> ${element.group}</p>
+          <p><strong>Period:</strong> ${element.period}</p>
+          <p><strong>Description:</strong> ${element.briefDesc}</p>
+        </div>
+        
+        <div class="status-controls">
+          <h4>Collection Status</h4>
+          <select id="elementStatus">
+            <option value="">No status</option>
+            <option value="Pure">Pure</option>
+            <option value="Representative">Representative</option>
+            <option value="Alloy">Alloy</option>
+            <option value="Wish">Wish</option>
+          </select>
+          <button onclick="updateElementStatus()">Update Status</button>
+        </div>
+      `;
+      
+      // Set current status
+      const userElement = userElements[element.atomicNumber];
+      if (userElement && userElement.status) {
+        document.getElementById('elementStatus').value = userElement.status;
+      }
+      
+      generateSampleManagement(element);
+      generateCommentSection(element);
+      
+      modal.style.display = 'flex';
+    }
+
+    function generateSampleManagement(element) {
+      const container = document.getElementById('sampleManagement');
+      const userElement = userElements[element.atomicNumber];
+      const samples = userElement ? userElement.samples || [] : [];
+      
+      container.innerHTML = `
+        <h4>Sample Management</h4>
+        <div class="sample-controls">
+          <input type="text" id="sampleDesc" placeholder="Sample description">
+          <input type="file" id="sampleImage" accept="image/*">
+          <button onclick="addSample()">Add Sample</button>
+        </div>
+        <div class="samples-list" id="samplesList">
+          ${samples.map((sample, index) => `
+            <div class="sample-item">
+              <p>${sample.description}</p>
+              ${sample.imageUrl ? `<img src="${sample.imageUrl}" alt="Sample" style="max-width: 100px;">` : ''}
+              <button onclick="removeSample(${index})">Remove</button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function generateCommentSection(element) {
+      const container = document.getElementById('commentSection');
+      const userElement = userElements[element.atomicNumber];
+      const comments = userElement ? userElement.comments || [] : [];
+      
+      container.innerHTML = `
+        <h4>Comments</h4>
+        <div class="comment-controls">
+          <textarea id="commentText" placeholder="Add a comment..." rows="3"></textarea>
+          <button onclick="addComment()">Add Comment</button>
+        </div>
+        <div class="comments-list" id="commentsList">
+          ${comments.map((comment, index) => `
+            <div class="comment-item">
+              <p>${comment.text}</p>
+              <small>Added: ${new Date(comment.timestamp).toLocaleDateString()}</small>
+              <button onclick="removeComment(${index})">Remove</button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function closeElementModal() {
+      document.getElementById('elementModal').style.display = 'none';
+      selectedElementId = null;
+    }
+
+    function updateElementStatus() {
+      if (!selectedElementId) return;
+      
+      const status = document.getElementById('elementStatus').value;
+      
+      if (!userElements[selectedElementId]) {
+        userElements[selectedElementId] = {};
+      }
+      
+      if (status) {
+        userElements[selectedElementId].status = status;
+      } else {
+        delete userElements[selectedElementId].status;
+      }
+      
+      generatePeriodicTable();
+      updateStats();
+    }
+
+    function addSample() {
+      if (!selectedElementId) return;
+      
+      const description = document.getElementById('sampleDesc').value.trim();
+      const imageFile = document.getElementById('sampleImage').files[0];
+      
+      if (!description) {
+        alert('Please enter a sample description');
+        return;
+      }
+      
+      if (!userElements[selectedElementId]) {
+        userElements[selectedElementId] = {};
+      }
+      
+      if (!userElements[selectedElementId].samples) {
+        userElements[selectedElementId].samples = [];
+      }
+      
+      const sample = {
+        description: description,
+        timestamp: Date.now()
+      };
+      
+      // Handle image upload (simplified)
+      if (imageFile) {
+        // In a real app, you'd upload to server
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          sample.imageUrl = e.target.result;
+          userElements[selectedElementId].samples.push(sample);
+          generateSampleManagement(elements.find(el => el.atomicNumber === selectedElementId));
+        };
+        reader.readAsDataURL(imageFile);
+      } else {
+        userElements[selectedElementId].samples.push(sample);
+        generateSampleManagement(elements.find(el => el.atomicNumber === selectedElementId));
+      }
+      
+      document.getElementById('sampleDesc').value = '';
+      document.getElementById('sampleImage').value = '';
+    }
+
+    function removeSample(index) {
+      if (!selectedElementId || !userElements[selectedElementId] || !userElements[selectedElementId].samples) return;
+      
+      userElements[selectedElementId].samples.splice(index, 1);
+      generateSampleManagement(elements.find(el => el.atomicNumber === selectedElementId));
+    }
+
+    function addComment() {
+      if (!selectedElementId) return;
+      
+      const text = document.getElementById('commentText').value.trim();
+      if (!text) {
+        alert('Please enter a comment');
+        return;
+      }
+      
+      if (!userElements[selectedElementId]) {
+        userElements[selectedElementId] = {};
+      }
+      
+      if (!userElements[selectedElementId].comments) {
+        userElements[selectedElementId].comments = [];
+      }
+      
+      const comment = {
+        text: text,
+        timestamp: Date.now()
+      };
+      
+      userElements[selectedElementId].comments.push(comment);
+      generateCommentSection(elements.find(el => el.atomicNumber === selectedElementId));
+      
+      document.getElementById('commentText').value = '';
+    }
+
+    function removeComment(index) {
+      if (!selectedElementId || !userElements[selectedElementId] || !userElements[selectedElementId].comments) return;
+      
+      userElements[selectedElementId].comments.splice(index, 1);
+      generateCommentSection(elements.find(el => el.atomicNumber === selectedElementId));
+    }
+
+    function updateStats() {
+      let pureCount = 0, repCount = 0, alloyCount = 0, wishCount = 0;
+      
+      Object.values(userElements).forEach(element => {
+        if (element.status) {
+          switch (element.status.toLowerCase()) {
+            case 'pure': pureCount++; break;
+            case 'representative': repCount++; break;
+            case 'alloy': alloyCount++; break;
+            case 'wish': wishCount++; break;
+          }
+        }
+      });
+      
+      document.getElementById('pureCount').textContent = pureCount;
+      document.getElementById('repCount').textContent = repCount;
+      document.getElementById('alloyCount').textContent = alloyCount;
+      document.getElementById('wishCount').textContent = wishCount;
+      
+      updateChart(pureCount, repCount, alloyCount, wishCount);
+    }
+
+    function initializeChart() {
+      const ctx = document.getElementById('statusChart').getContext('2d');
+      window.statusChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Pure', 'Representative', 'Alloy', 'Wish'],
+          datasets: [{
+            data: [0, 0, 0, 0],
+            backgroundColor: ['#28a745', '#ffc107', '#17a2b8', '#dc3545']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: 'white'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function updateChart(pure, rep, alloy, wish) {
+      if (window.statusChart) {
+        window.statusChart.data.datasets[0].data = [pure, rep, alloy, wish];
+        window.statusChart.update();
+      }
+    }
+
+    function showTooltip(event, element) {
+      const tooltip = document.getElementById('elementTooltip');
+      const userElement = userElements[element.atomicNumber];
+      
+      tooltip.innerHTML = `
+        <div class="tooltip-title">${element.name} (${element.symbol})</div>
+        <div>Atomic #: ${element.atomicNumber}</div>
+        <div>Mass: ${element.atomicMass}</div>
+        ${userElement && userElement.status ? `<div>Status: ${userElement.status}</div>` : ''}
+        <div>${element.briefDesc}</div>
+      `;
+      
+      tooltip.style.left = event.pageX + 10 + 'px';
+      tooltip.style.top = event.pageY + 10 + 'px';
+      tooltip.classList.add('visible');
+    }
+
+    function hideTooltip() {
+      document.getElementById('elementTooltip').classList.remove('visible');
+    }
+
+    function toggleQuickStatus() {
+      quickStatusMode = document.getElementById('quickStatusCheckbox').checked;
+      const dropdown = document.getElementById('quickStatusDropdown');
+      dropdown.style.display = quickStatusMode ? 'block' : 'none';
+    }
+
+    function handleQuickStatusChange() {
+      // Quick status change logic
+    }
+
+    function toggleGalleryView() {
+      isGalleryView = document.getElementById('galleryViewCheckbox').checked;
+      const tableView = document.getElementById('tableView');
+      const galleryView = document.getElementById('galleryView');
+      
+      if (isGalleryView) {
+        tableView.style.display = 'none';
+        galleryView.classList.add('active');
+      } else {
+        tableView.style.display = 'block';
+        galleryView.classList.remove('active');
+      }
+    }
+
+    function toggleStickyTable() {
+      // Sticky table functionality
+      const tableContainer = document.querySelector('.table-container');
+      tableContainer.style.position = tableContainer.style.position === 'sticky' ? 'relative' : 'sticky';
+      tableContainer.style.top = tableContainer.style.position === 'sticky' ? '80px' : 'auto';
+    }
+
+    function toggleDarkMode(force = null) {
+      isDarkMode = force !== null ? force : !isDarkMode;
+      document.body.classList.toggle('dark-mode', isDarkMode);
+      
+      const icon = document.querySelector('#themeToggle i');
+      icon.className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
+      
+      localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    }
+
+    function handleSearch() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      if (!query) {
+        // Show all elements
+        document.querySelectorAll('.periodic-cell').forEach(cell => {
+          cell.style.opacity = '1';
+        });
+        return;
+      }
+      
+      document.querySelectorAll('.periodic-cell').forEach(cell => {
+        const atomicNumber = parseInt(cell.dataset.atomicNumber);
+        const element = elements.find(el => el.atomicNumber === atomicNumber);
+        
+        if (element) {
+          const matches = element.name.toLowerCase().includes(query) || 
+                         element.symbol.toLowerCase().includes(query);
+          cell.style.opacity = matches ? '1' : '0.3';
+        }
+      });
+    }
+
+    function performSearch() {
+      // Additional search functionality
+      handleSearch();
+    }
+
+    async function handleAuth(event) {
+      event.preventDefault();
+      const username = document.getElementById('usernameInput').value.trim();
+      const password = document.getElementById('passwordInput').value;
+      
+      if (!username || !password) {
+        alert('Please enter username and password');
+        return;
+      }
+      
+      try {
+        // Simulate login (replace with actual API call)
+        isLoggedIn = true;
+        userData = { username: username };
+        
+        document.getElementById('authCard').style.display = 'none';
+        document.getElementById('userInfo').style.display = 'flex';
+        document.getElementById('userName').textContent = username;
+        document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+        
+        loadUserData();
+        
+      } catch (error) {
+        alert('Login failed: ' + error.message);
+      }
+    }
+
+    function handleLogout() {
+      isLoggedIn = false;
+      userData = null;
+      userElements = {};
+      
+      document.getElementById('authCard').style.display = 'block';
+      document.getElementById('userInfo').style.display = 'none';
+      
+      generatePeriodicTable();
+      updateStats();
+    }
+
+    function saveUserData() {
+      if (!isLoggedIn) {
+        alert('Please log in first');
+        return;
+      }
+      
+      // Simulate saving (replace with actual API call)
+      localStorage.setItem('userElements_' + userData.username, JSON.stringify(userElements));
+      alert('Data saved successfully!');
+    }
+
+    function loadUserData() {
+      if (!isLoggedIn || !userData) return;
+      
+      // Simulate loading (replace with actual API call)
+      const saved = localStorage.getItem('userElements_' + userData.username);
+      if (saved) {
+        userElements = JSON.parse(saved);
+        generatePeriodicTable();
+        updateStats();
+      }
+    }
+
+    function checkSession() {
+      // Check for existing session (simplified)
+      const savedUser = localStorage.getItem('currentUser');
+      if (savedUser) {
+        userData = JSON.parse(savedUser);
+        isLoggedIn = true;
+        
+        document.getElementById('authCard').style.display = 'none';
+        document.getElementById('userInfo').style.display = 'flex';
+        document.getElementById('userName').textContent = userData.username;
+        document.getElementById('userAvatar').textContent = userData.username.charAt(0).toUpperCase();
+      }
+    }
+
+    function viewUserCollection() {
+      const username = document.getElementById('viewUsernameInput').value.trim();
+      if (!username) {
+        alert('Please enter a username');
+        return;
+      }
+      
+      // Simulate viewing another user's collection
+      alert('Viewing collection for: ' + username);
+    }
+
+    function viewOwnerInfo() {
+      alert('PeriodicTracker - A modern element collection tracker');
+    }
+  </script>
+
+  <style>
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .modal-content {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: var(--space-xl);
+      color: white;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      padding: 0;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .modal-close:hover {
+      background: var(--glass);
+    }
+
+    .element-info p {
+      margin-bottom: var(--space-sm);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .status-controls,
+    .sample-controls,
+    .comment-controls {
+      margin-top: var(--space-lg);
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .status-controls select,
+    .sample-controls input,
+    .comment-controls textarea {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm);
+      color: white;
+      margin-right: var(--space-sm);
+      margin-bottom: var(--space-sm);
+    }
+
+    .sample-item,
+    .comment-item {
+      background: var(--glass);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-sm);
+      border: 1px solid var(--glass-border);
+    }
+
+    .sample-item img {
+      display: block;
+      margin: var(--space-sm) 0;
+      border-radius: var(--radius-sm);
+    }
+
+    .comment-item small {
+      color: rgba(255, 255, 255, 0.6);
+      display: block;
+      margin-top: var(--space-sm);
+    }
+
+    /* Empty cell styling */
+    .empty-cell {
+      background: transparent;
+      border: none;
+    }
+  </style>

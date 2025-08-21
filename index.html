@@ -29,6 +29,7 @@
     .left-column {
       flex: 1;
       max-width: 1200px;
+      min-width: 0; /* Allow shrinking */
       background: #fff;
       border-radius: 6px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.12);
@@ -159,6 +160,8 @@
       border: 1px solid #ddd;
       border-radius: 4px;
       padding: 10px;
+      min-height: 0; /* Allow flex shrinking */
+      overflow: visible; /* Show all content */
     }
     .sticky-fixed {
       position: fixed;
@@ -173,6 +176,9 @@
     #periodicTable {
       border-collapse: collapse;
       margin-bottom: 10px;
+      width: 100%;
+      max-width: 100%;
+      table-layout: fixed; /* Maintain consistent cell sizes */
     }
     #periodicTable td {
       width: 60px;
@@ -297,6 +303,8 @@
     }
     .details-panel {
       width: 400px;
+      min-width: 400px;
+      max-width: 400px;
       background: #fff;
       border: 1px solid #ccc;
       padding: 16px;
@@ -305,6 +313,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      flex-shrink: 0; /* Don't shrink this panel */
     }
     .edit-mode {
       border: 2px solid #ffbb33 !important;

@@ -159,8 +159,8 @@
       border: 1px solid #ddd;
       border-radius: 4px;
       padding: 10px;
-      overflow: hidden; /* Prevent overflow */
-      max-height: calc(100vh - 200px); /* Prevent container from exceeding viewport */
+      overflow: auto; /* Allow scrolling instead of hidden */
+      max-height: calc(100vh - 150px); /* Better height calculation */
     }
     .sticky-fixed {
       position: fixed;
@@ -308,7 +308,7 @@
       flex-direction: column;
       gap: 10px;
       overflow-y: auto; /* Allow scrolling if content exceeds */
-      max-height: calc(100vh - 180px); /* Prevent panel from exceeding viewport */
+      max-height: calc(100vh - 120px); /* Better height calculation */
     }
     .edit-mode {
       border: 2px solid #ffbb33 !important;
@@ -3070,14 +3070,17 @@
     async function viewPublic(){
       const user = document.getElementById("viewUsernameInput").value.trim();
       if(!user){
-        alert("Enter a username to view.");
+        showToast("Enter a username to view.", "warning");
         return;
       }
+      
+      showToast("Loading collection...", "info", 2000);
+      
       try{
         const resp = await fetch("/public/" + encodeURIComponent(user), {credentials:"include"});
         const data = await resp.json();
         if(data.status === "success"){
-          alert("Loaded public collection of " + user);
+          showToast(`Loaded public collection of ${user}`, "success");
           isLoggedIn = false;
           loggedInUser = null;
           isViewingPublic = true;
@@ -3095,7 +3098,7 @@
           // Fetch user profile info and update buttons with profile picture
           updateButtonsWithProfile(user);
         } else {
-          alert("View error: " + (data.message || "Unknown"));
+          showToast("View error: " + (data.message || "User not found or collection not public"), "error");
         }
       } catch(err){
         showToast("Failed to view user's data: " + err, "error");
@@ -3332,6 +3335,18 @@
       refreshStatuses();
       updateCounters();
       updateUserStatusBar();
+      
+      // Check for ?view=username parameter and auto-load that user
+      const urlParams = new URLSearchParams(window.location.search);
+      const viewUser = urlParams.get('view');
+      if (viewUser) {
+        // Set the view username input and trigger view
+        document.getElementById('viewUsernameInput').value = viewUser;
+        // Use setTimeout to ensure page is fully loaded
+        setTimeout(() => {
+          viewPublic();
+        }, 500);
+      }
     });
   </script>
 </body>

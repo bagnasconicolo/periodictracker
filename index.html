@@ -11,16 +11,19 @@
       margin: 0;
       padding: 0;
       width: 100%;
+      height: 100vh;
       box-sizing: border-box;
       font-family: "Segoe UI", Tahoma, Arial, sans-serif;
       background: linear-gradient(135deg, #fdfdfd 0%, #e8f0fd 100%);
+      overflow-x: hidden;
     }
     body {
       display: flex;
       flex-direction: row;
-      gap: 20px;
-      margin: 10px;
+      gap: 15px;
+      margin: 0;
       padding: 10px;
+      max-width: 100vw;
     }
     /* DARK MODE overrides */
     body.dark-mode {
@@ -2184,6 +2187,7 @@
            alert("Sample deleted!");
            loadSamplesFor(isViewingPublic ? viewedUser : loggedInUser, currentSymbol);
            fetchSampleCounts(isViewingPublic ? viewedUser : loggedInUser);
+           fetchCommentCounts(isViewingPublic ? viewedUser : loggedInUser);
         } else {
            alert("Delete failed: " + (res.message || "Unknown"));
         }
@@ -2350,6 +2354,7 @@
              document.getElementById("addSampleForm").style.display = "none";
              loadSamplesFor(isViewingPublic ? viewedUser : loggedInUser, currentSymbol);
              fetchSampleCounts(isViewingPublic ? viewedUser : loggedInUser);
+             fetchCommentCounts(isViewingPublic ? viewedUser : loggedInUser);
            } else {
              alert("Failed to update sample: " + (res.message || 'Unknown'));
            }
@@ -2373,6 +2378,7 @@
              document.getElementById("addSampleForm").style.display = "none";
              loadSamplesFor(isViewingPublic ? viewedUser : loggedInUser, currentSymbol);
              fetchSampleCounts(isViewingPublic ? viewedUser : loggedInUser);
+             fetchCommentCounts(isViewingPublic ? viewedUser : loggedInUser);
            } else {
              alert("Failed to add sample: " + (res.message || 'Unknown'));
            }
@@ -2754,6 +2760,7 @@
              alert("Comment posted");
              document.getElementById("commentInput").value = "";
              loadCommentsFor(ownerUsername, symbol);
+             fetchCommentCounts(ownerUsername);
          } else {
              alert("Error posting comment: " + (data.message || "Unknown"));
          }

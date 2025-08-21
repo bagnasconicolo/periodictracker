@@ -1,9 +1,10 @@
 # Database configuration (contains sensitive credentials)
-www/html/db.php
+db.php
 
 # User uploads directory (too large for git, handle separately)
-www/html/uploads/
-!www/html/uploads/.gitkeep
+uploads/
+!uploads/.gitkeep
+!uploads/*/.gitkeep
 
 # System files
 .DS_Store
@@ -15,7 +16,7 @@ Thumbs.db
 
 # Logs
 *.log
-www/html/debug.log
+debug.log
 
 # Temporary files
 *.tmp

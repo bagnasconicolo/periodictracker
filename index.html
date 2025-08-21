@@ -577,10 +577,336 @@
       border-radius: 3px;
       z-index: 1001;
     }
+    
+    /* =============================
+       ACCESSIBILITY STYLES
+       ============================= */
+    
+    /* Screen reader only text */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    
+    /* Help text styling */
+    .help-text {
+      font-size: 0.875em;
+      color: #666;
+      font-style: italic;
+      margin-left: 8px;
+    }
+    
+    .dark-mode .help-text {
+      color: #999;
+    }
+    
+    /* Focus indicators */
+    button:focus,
+    input:focus,
+    select:focus,
+    textarea:focus,
+    .periodic-container td:focus {
+      outline: 2px solid #4a90e2;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.2);
+    }
+    
+    /* High contrast focus for periodic table */
+    .periodic-container td:focus {
+      outline: 3px solid #fff;
+      outline-offset: -3px;
+      box-shadow: 0 0 0 6px #4a90e2;
+    }
+    
+    /* Skip link for keyboard navigation */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 6px;
+      background: #000;
+      color: #fff;
+      padding: 8px;
+      text-decoration: none;
+      border-radius: 4px;
+      z-index: 10000;
+    }
+    
+    .skip-link:focus {
+      top: 6px;
+    }
+    
+    /* =============================
+       RESPONSIVE DESIGN & MOBILE
+       ============================= */
+    
+    /* Tablet and smaller devices */
+    @media screen and (max-width: 1024px) {
+      body {
+        flex-direction: column;
+        padding: 8px;
+        gap: 10px;
+      }
+      
+      .details-panel {
+        width: 100%;
+        max-width: none;
+        order: -1; /* Move details panel to top on mobile */
+      }
+      
+      .left-column {
+        max-width: none;
+      }
+      
+      #menuBar {
+        font-size: 0.9em;
+        padding: 6px;
+      }
+      
+      #menuBar a {
+        display: inline-block;
+        margin: 2px 5px;
+      }
+    }
+    
+    /* Mobile phones */
+    @media screen and (max-width: 768px) {
+      body {
+        padding: 4px;
+        gap: 8px;
+      }
+      
+      .left-column {
+        padding: 10px;
+      }
+      
+      .details-panel {
+        padding: 12px;
+      }
+      
+      /* Make periodic table more touch-friendly */
+      .periodic-container td {
+        min-width: 45px;
+        min-height: 45px;
+        font-size: 0.8em;
+      }
+      
+      .sub-block-container td {
+        width: 45px;
+        height: 45px;
+        font-size: 0.8em;
+      }
+      
+      /* Improve readability on small screens */
+      .element-number {
+        font-size: 8px;
+      }
+      
+      .comment-badge, .sample-badge {
+        font-size: 0.6em;
+        padding: 1px 3px;
+      }
+      
+      /* Mobile-friendly forms */
+      input[type="text"], input[type="password"], input[type="email"], 
+      input[type="number"], input[type="url"], select, textarea {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 8px;
+        border-radius: 4px;
+      }
+      
+      button {
+        padding: 10px 15px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        touch-action: manipulation;
+      }
+      
+      /* Modal adjustments for mobile */
+      #authorInfoModal {
+        width: 95vw;
+        max-width: 95vw;
+        max-height: 85vh;
+        padding: 15px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      
+      /* Menu bar improvements */
+      #menuBar {
+        font-size: 0.8em;
+        padding: 8px;
+        text-align: left;
+      }
+      
+      #menuBar a {
+        display: block;
+        margin: 3px 0;
+        padding: 2px 0;
+      }
+      
+      /* Chart adjustments */
+      #statusChart {
+        width: 150px;
+        height: 150px;
+      }
+      
+      /* Toast notifications for mobile */
+      .toast {
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 90vw;
+        font-size: 14px;
+      }
+    }
+    
+    /* Small mobile phones */
+    @media screen and (max-width: 480px) {
+      .periodic-container td {
+        min-width: 40px;
+        min-height: 40px;
+        font-size: 0.7em;
+      }
+      
+      .sub-block-container td {
+        width: 40px;
+        height: 40px;
+        font-size: 0.7em;
+      }
+      
+      .element-number {
+        font-size: 7px;
+      }
+      
+      #elementTitle {
+        font-size: 1em;
+      }
+      
+      .details-panel {
+        padding: 8px;
+      }
+      
+      #authorInfoModal {
+        width: 98vw;
+        max-width: 98vw;
+        padding: 10px;
+      }
+      
+      /* Stack form elements vertically on very small screens */
+      .edit-fields {
+        gap: 6px;
+      }
+      
+      textarea {
+        height: 60px;
+      }
+      
+      #statusChart {
+        width: 120px;
+        height: 120px;
+      }
+    }
+    
+    /* Touch improvements for all mobile devices */
+    @media (hover: none) and (pointer: coarse) {
+      .periodic-container td:hover,
+      .sub-block-container td:hover {
+        background: inherit; /* Remove hover effects on touch devices */
+      }
+      
+      .periodic-container td:active,
+      .sub-block-container td:active {
+        background: #e0e0e0;
+        transform: scale(0.95);
+      }
+      
+      button:hover {
+        background: inherit;
+      }
+      
+      button:active {
+        transform: scale(0.95);
+      }
+      
+      /* Larger touch targets */
+      .comment-badge, .sample-badge {
+        min-width: 20px;
+        min-height: 20px;
+      }
+    }
+    
+    /* High DPI displays */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .periodic-container td,
+      .sub-block-container td {
+        border-width: 0.5px;
+      }
+      
+      #elementTooltip {
+        border-width: 0.5px;
+      }
+    }
+    
+    /* Landscape orientation on mobile */
+    @media screen and (max-width: 768px) and (orientation: landscape) {
+      body {
+        flex-direction: row;
+      }
+      
+      .details-panel {
+        order: 0;
+        width: 350px;
+      }
+      
+      .left-column {
+        flex: 1;
+      }
+    }
+    
+    /* Print styles */
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      
+      .details-panel {
+        border: 1px solid black;
+        box-shadow: none;
+      }
+      
+      .left-column {
+        border: 1px solid black;
+        box-shadow: none;
+      }
+      
+      button {
+        display: none;
+      }
+      
+      .toast {
+        display: none;
+      }
+      
+      #authorInfoModal {
+        display: none;
+      }
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+  <!-- Skip link for accessibility -->
+  <a href="#periodicTable" class="skip-link">Skip to periodic table</a>
+  
   <!-- LEFT COLUMN -->
   <div class="left-column">
     <div id="topBanner">
@@ -596,28 +922,33 @@
       <button id="darkModeToggle">Dark Mode</button>
     </div>
     <div id="userStatusBar">Not logged in.</div>
-    <div id="topControls">
+    <div id="topControls" role="main" aria-label="Control Panel">
       <div class="row">
-        <input type="text" id="usernameInput" placeholder="Username">
-        <input type="password" id="passwordInput" placeholder="Password">
-        <button id="loginLoadBtn" class="btn-primary">Login &amp; Load</button>
-        <button id="saveBtn" class="btn-success">Save</button>
+        <label for="usernameInput" class="sr-only">Username</label>
+        <input type="text" id="usernameInput" placeholder="Username" aria-label="Username for login" autocomplete="username">
+        <label for="passwordInput" class="sr-only">Password</label>
+        <input type="password" id="passwordInput" placeholder="Password" aria-label="Password for login" autocomplete="current-password">
+        <button id="loginLoadBtn" class="btn-primary" aria-describedby="loginHint">Login &amp; Load</button>
+        <button id="saveBtn" class="btn-success" title="Save your collection (Ctrl+S)">Save</button>
         <button id="logoutBtn" class="btn-secondary" style="display:none;">Logout</button>
-        To register, input your desired username and password.
+        <span id="loginHint" class="help-text">To register, input your desired username and password.</span>
       </div>
       <div class="row">
-        <input type="text" id="viewUsernameInput" placeholder="View user (public)">
+        <label for="viewUsernameInput" class="sr-only">View User</label>
+        <input type="text" id="viewUsernameInput" placeholder="View user (public)" aria-label="Username to view public collection">
         <button id="viewBtn" class="btn-primary">View</button>
-        <input type="text" id="searchInput" placeholder="Search (symbol/name)">
+        <label for="searchInput" class="sr-only">Search Elements</label>
+        <input type="text" id="searchInput" placeholder="Search (symbol/name)" aria-label="Search elements by symbol or name" title="Search elements (Ctrl+F)">
         <button id="searchBtn" class="btn-warning">Search</button>
-        <button id="viewOwnerInfoBtn" class="btn-secondary">Author Info</button>
+        <button id="viewOwnerInfoBtn" class="btn-secondary" title="View information about the current collection owner">Author Info</button>
       </div>
       <div class="row">
         <label style="display:flex; align-items:center; margin-right:20px;">
-          <input type="checkbox" id="quickStatusCheckbox" style="margin-right:4px;">
+          <input type="checkbox" id="quickStatusCheckbox" style="margin-right:4px;" aria-describedby="quickStatusHelp">
           Quick Status
         </label>
-        <select id="quickStatusDropdown" style="margin-right:20px;">
+        <label for="quickStatusDropdown" class="sr-only">Quick Status Type</label>
+        <select id="quickStatusDropdown" style="margin-right:20px;" aria-label="Select status type for quick assignment">
           <option value="">None</option>
           <option value="Pure">Pure</option>
           <option value="Representative">Representative</option>
@@ -625,16 +956,18 @@
           <option value="Wish">Wish</option>
         </select>
         <label style="display:flex; align-items:center; margin-right:20px;">
-          <input type="checkbox" id="galleryViewCheckbox" style="margin-right:4px;">
+          <input type="checkbox" id="galleryViewCheckbox" style="margin-right:4px;" aria-describedby="galleryHelp">
           Gallery View
         </label>
+        <span id="quickStatusHelp" class="sr-only">Enable to quickly assign status to elements by clicking</span>
+        <span id="galleryHelp" class="sr-only">Toggle between table and gallery view of elements</span>
       </div>
     </div>
-    <div class="periodic-container">
+    <div class="periodic-container" role="region" aria-label="Periodic Table of Elements">
       <!-- Toggle Handle for sticky mode -->
-      <button id="toggleStickyBtn">Stick Table</button>
+      <button id="toggleStickyBtn" title="Toggle sticky table mode">Stick Table</button>
       <!-- Main Periodic Table -->
-      <table id="periodicTable"></table>
+      <table id="periodicTable" role="table" aria-label="Periodic Table of Chemical Elements"></table>
       <div class="sub-block-container">
         <strong>Lanthanides (La–Lu)</strong>
         <table id="lanthanideTable"></table>
@@ -783,6 +1116,32 @@
     // Enhanced alert replacement
     function showAlert(message, type = 'info') {
       showToast(message, type, 4000);
+    }
+    
+    // Debounce utility for performance
+    function debounce(func, wait, immediate) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          timeout = null;
+          if (!immediate) func(...args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func(...args);
+      };
+    }
+    
+    // Performance monitoring
+    function measurePerformance(name, fn) {
+      return function(...args) {
+        const start = performance.now();
+        const result = fn.apply(this, args);
+        const end = performance.now();
+        console.debug(`${name} took ${end - start} milliseconds`);
+        return result;
+      };
     }
     
     // Add selected state to periodic table cells
@@ -2384,7 +2743,7 @@
       })
       .catch(err => {
          console.error("Delete sample error:", err);
-         alert("Delete sample request failed: " + err);
+         showToast("Delete sample request failed: " + err, "error");
       });
     }
     document.getElementById("statusSelect").addEventListener("change", updateCurrentElementRecord);
@@ -2466,7 +2825,7 @@
           alert("Upload error: " + (data.message || 'Unknown'));
         }
       } catch(err) {
-        alert("Upload request failed: " + err);
+        showToast("Upload request failed: " + err, "error");
       }
     });
     // Sample file upload for samples
@@ -2500,7 +2859,7 @@
           alert("Sample file upload error: " + (data.message || 'Unknown'));
         }
       } catch(err) {
-        alert("Sample file upload request failed: " + err);
+        showToast("Sample file upload request failed: " + err, "error");
       }
     });
     document.getElementById("showAddSampleBtn").addEventListener("click", () => {
@@ -2551,7 +2910,7 @@
          })
          .catch(err => {
            console.error("Sample update error:", err);
-           alert("Sample update request failed: " + err);
+           showToast("Sample update request failed: " + err, "error");
          });
       } else {
          // Add new sample via POST
@@ -2575,21 +2934,31 @@
          })
          .catch(err => {
            console.error("Sample post error:", err);
-           alert("Sample request failed: " + err);
+           showToast("Sample request failed: " + err, "error");
          });
       }
     });
+    // Enhanced with loading feedback
     function fetchSampleCounts(ownerUsername){
       sampleCounts = {};
       if(!ownerUsername) return;
+      
+      // Show loading indicator
+      document.body.style.cursor = 'wait';
+      
       fetch(`/samples/count?ownerUsername=${ownerUsername}`)
         .then(resp => resp.json())
         .then(data => {
           if(data.status === "success"){
             sampleCounts = data.counts || {};
+            const elementCount = Object.keys(sampleCounts).length;
+            if(elementCount > 0) {
+              showToast(`Loaded samples for ${elementCount} elements`, 'success', 2000);
+            }
           } else {
             console.warn("Could not load sample counts:", data.message || 'Error');
             sampleCounts = {};
+            showToast("Could not load sample counts", 'warning', 2000);
           }
           updateSampleBadges();
         })
@@ -2597,6 +2966,10 @@
           console.error("Sample counts fetch error:", err);
           sampleCounts = {};
           updateSampleBadges();
+          showToast("Failed to load sample data", 'error', 3000);
+        })
+        .finally(() => {
+          document.body.style.cursor = 'default';
         });
     }
     function updateCounters(){
@@ -2735,7 +3108,7 @@
           resetButtonsToDefault();
         }
       } catch(err){
-        alert("Logout failed: " + err);
+        showToast("Logout failed: " + err, "error");
       }
     }
     document.getElementById("logoutBtn").addEventListener("click", logoutUser);
@@ -2771,7 +3144,7 @@
           alert("View error: " + (data.message || "Unknown"));
         }
       } catch(err){
-        alert("Failed to view user's data: " + err);
+        showToast("Failed to view user's data: " + err, "error");
       }
     }
     
@@ -2884,7 +3257,7 @@
          }
          document.getElementById("authorInfoModal").style.display = 'block';
       } catch(err){
-         alert("Failed to fetch user profile: " + err);
+         showToast("Failed to fetch user profile: " + err, "error");
       }
     }
     // Add event listener for the author info modal close button
@@ -2926,7 +3299,7 @@
           document.getElementById("commentingAs").innerHTML = `<strong>Commenting as:</strong> ${loggedInUser}`;
           updateUserStatusBar();
        } catch(err){
-          alert("Login request failed: " + err);
+          showToast("Login request failed: " + err, "error");
        }
     });
     // Comment posting – now the inline login form ensures the user is logged in.
@@ -2966,7 +3339,7 @@
       })
       .catch(err => {
          console.error("Comment post error:", err);
-         alert("Comment request failed: " + err);
+         showToast("Comment request failed: " + err, "error");
       });
     });
     function fetchCommentCounts(ownerUsername){

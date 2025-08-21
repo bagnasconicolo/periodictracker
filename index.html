@@ -136,21 +136,57 @@
     }
     input, select, button {
       margin: 3px 0;
-      padding: 6px 8px;
+      padding: 8px 12px;
       font-size: 1em;
       border: 1px solid #ccc;
-      border-radius: 3px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+    input::placeholder {
+      color: #95a5a6;
+      font-style: italic;
+    }
+    input:invalid {
+      border-color: #e74c3c;
+    }
+    input:valid {
+      border-color: #27ae60;
     }
     button {
       background: #3498db;
       color: #fff;
       cursor: pointer;
-      transition: background 0.2s ease;
+      transition: all 0.2s ease;
       border: none;
+      font-weight: 500;
     }
     button:hover {
       background: #1f78b4;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    button:focus {
+      outline: 2px solid #74b9ff;
+      outline-offset: 2px;
+    }
+    /* Button variants */
+    .btn-success { background: #27ae60; }
+    .btn-success:hover { background: #219a54; }
+    .btn-danger { background: #e74c3c; }
+    .btn-danger:hover { background: #c0392b; }
+    .btn-warning { background: #f39c12; }
+    .btn-warning:hover { background: #d68910; }
+    .btn-secondary { background: #95a5a6; }
+    .btn-secondary:hover { background: #7f8c8d; }
     .periodic-container {
       position: relative;
       flex: 1;
@@ -184,12 +220,31 @@
       border: 1px solid #ddd;
       cursor: pointer;
       position: relative;
-      transition: background 0.2s ease, outline 0.2s ease;
+      transition: all 0.2s ease;
       background-size: cover;
       background-position: center;
+      border-radius: 4px;
+      font-weight: 600;
     }
     #periodicTable td:hover {
-      background: #f0f0f0;
+      background: #f8f9fa;
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      z-index: 10;
+      border-color: #3498db;
+    }
+    #periodicTable td:active {
+      transform: scale(0.95);
+    }
+    #periodicTable td.selected {
+      outline: 3px solid #3498db;
+      outline-offset: 2px;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { outline-color: #3498db; }
+      50% { outline-color: #74b9ff; }
+      100% { outline-color: #3498db; }
     }
     .atomic-number {
       position: absolute;
@@ -391,6 +446,56 @@
       height: 74px;
       vertical-align: middle;
     }
+    /* Loading states */
+    .loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    .loading::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 16px;
+      height: 16px;
+      margin: -8px 0 0 -8px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Toast notifications */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #2c3e50;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 10000;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .toast.show {
+      transform: translateX(0);
+    }
+    .toast.success {
+      background: #27ae60;
+    }
+    .toast.error {
+      background: #e74c3c;
+    }
+    .toast.warning {
+      background: #f39c12;
+    }
+    
     /* Button with profile picture styles */
     .btn-with-avatar {
       display: inline-flex;
@@ -495,17 +600,17 @@
       <div class="row">
         <input type="text" id="usernameInput" placeholder="Username">
         <input type="password" id="passwordInput" placeholder="Password">
-        <button id="loginLoadBtn">Login &amp; Load</button>
-        <button id="saveBtn">Save</button>
-        <button id="logoutBtn" style="display:none;">Logout</button>
+        <button id="loginLoadBtn" class="btn-primary">Login &amp; Load</button>
+        <button id="saveBtn" class="btn-success">Save</button>
+        <button id="logoutBtn" class="btn-secondary" style="display:none;">Logout</button>
         To register, input your desired username and password.
       </div>
       <div class="row">
         <input type="text" id="viewUsernameInput" placeholder="View user (public)">
-        <button id="viewBtn">View</button>
+        <button id="viewBtn" class="btn-primary">View</button>
         <input type="text" id="searchInput" placeholder="Search (symbol/name)">
-        <button id="searchBtn">Search</button>
-        <button id="viewOwnerInfoBtn">Author Info</button>
+        <button id="searchBtn" class="btn-warning">Search</button>
+        <button id="viewOwnerInfoBtn" class="btn-secondary">Author Info</button>
       </div>
       <div class="row">
         <label style="display:flex; align-items:center; margin-right:20px;">
@@ -630,9 +735,91 @@
   <!-- AUTHOR INFO MODAL (used for both clicking comment usernames and Author Info) -->
   <div id="authorInfoModal">
     <div id="authorInfoContent"></div>
-    <button id="authorInfoClose">Close</button>
+    <button id="authorInfoClose" class="btn-secondary">Close</button>
   </div>
+  
+  <!-- Toast notification container -->
+  <div id="toastContainer"></div>
   <script>
+    /**************************************************************
+     * UTILITY FUNCTIONS FOR ENHANCED UX
+     **************************************************************/
+    
+    // Toast notification system
+    function showToast(message, type = 'info', duration = 3000) {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+      
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      
+      container.appendChild(toast);
+      
+      // Trigger animation
+      setTimeout(() => toast.classList.add('show'), 100);
+      
+      // Auto remove
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => container.removeChild(toast), 300);
+      }, duration);
+    }
+    
+    // Loading state for buttons
+    function setButtonLoading(button, loading) {
+      if (loading) {
+        button.disabled = true;
+        button.classList.add('loading');
+        button.dataset.originalText = button.textContent;
+        button.textContent = 'Loading...';
+      } else {
+        button.disabled = false;
+        button.classList.remove('loading');
+        button.textContent = button.dataset.originalText || button.textContent;
+      }
+    }
+    
+    // Enhanced alert replacement
+    function showAlert(message, type = 'info') {
+      showToast(message, type, 4000);
+    }
+    
+    // Add selected state to periodic table cells
+    let selectedCell = null;
+    function selectCell(cell) {
+      if (selectedCell) {
+        selectedCell.classList.remove('selected');
+      }
+      selectedCell = cell;
+      if (cell) {
+        cell.classList.add('selected');
+      }
+    }
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Ctrl/Cmd + S to save
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        if (document.getElementById('saveBtn').style.display !== 'none') {
+          document.getElementById('saveBtn').click();
+        }
+      }
+      // Escape to close modals
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('authorInfoModal');
+        if (modal && modal.style.display === 'block') {
+          modal.style.display = 'none';
+        }
+      }
+      // Focus search on Ctrl/Cmd + F
+      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        e.preventDefault();
+        document.getElementById('searchInput').focus();
+      }
+    });
+    
     /**************************************************************
      * 1) STATIC ELEMENTS DATA
      * (The complete elementsData array is omitted for brevity)
@@ -1932,6 +2119,9 @@
         document.getElementById("elementTooltip").style.display = 'none';
       });
       cell.addEventListener("click", () => {
+        // Add visual selection feedback
+        selectCell(cell);
+        
         if(isViewingPublic){
           openDetailsFor(el.symbol, true);
         } else if(quickStatusMode && isLoggedIn){
@@ -1939,7 +2129,7 @@
         } else if(!quickStatusMode){
           openDetailsFor(el.symbol, false);
         } else {
-          alert("You must be logged in to modify statuses.");
+          showToast("You must be logged in to modify statuses.", "warning");
         }
       });
     }
@@ -2444,10 +2634,15 @@
     async function loginAndLoad(){
       const username = document.getElementById("usernameInput").value.trim();
       const password = document.getElementById("passwordInput").value;
+      const loginBtn = document.getElementById("loginLoadBtn");
+      
       if(!username || !password){
-        alert("Enter username and password.");
+        showToast("Please enter username and password.", "warning");
         return;
       }
+      
+      setButtonLoading(loginBtn, true);
+      
       try{
         let resp = await fetch("/auth/login", {
           method: "POST",
@@ -2457,12 +2652,13 @@
         });
         let data = await resp.json();
         if(data.status !== "success"){
-          alert("Login error: " + (data.message || "Unknown"));
+          showToast("Login error: " + (data.message || "Unknown"), "error");
+          setButtonLoading(loginBtn, false);
           return;
         }
-        alert("Logged in!");
+        showToast("Successfully logged in!", "success");
         if(data.newUser) {
-          alert("Welcome new user! Please update your profile in Profile Settings.");
+          showToast("Welcome new user! Please update your profile in Profile Settings.", "info", 5000);
         }
         isLoggedIn = true;
         loggedInUser = username;
@@ -2472,21 +2668,24 @@
         updateUserStatusBar();
         detailsPanel.classList.remove("view-mode");
         detailsPanel.classList.add("edit-mode");
-        alert("Loading your data...");
+        
+        showToast("Loading your data...", "info");
         resp = await fetch("/user", {credentials:"include"});
         data = await resp.json();
         if(data.status === "success"){
           elementDataStatus = data.statuses || {};
           updateCounters();
           refreshStatuses();
-          alert("Data loaded for user: " + username);
+          showToast("Data loaded successfully for " + username, "success");
         } else {
-          alert("Could not load data: " + (data.message || "Unknown"));
+          showToast("Could not load data: " + (data.message || "Unknown"), "error");
         }
         fetchCommentCounts(username);
         fetchSampleCounts(username);
       } catch(err) {
-        alert("Login request failed: " + err);
+        showToast("Login request failed: " + err, "error");
+      } finally {
+        setButtonLoading(loginBtn, false);
       }
     }
     document.getElementById("saveBtn").addEventListener("click", saveData);

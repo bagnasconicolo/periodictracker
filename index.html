@@ -354,9 +354,15 @@
       padding: 20px;
       border-radius: 6px;
       display: none;
-      width: 300px;
-      max-width: 90%;
+      min-width: 300px;
+      max-width: 90vw;
+      max-height: 80vh;
+      overflow-y: auto;
       z-index: 9999;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      /* Auto-resize to content */
+      width: auto;
+      height: auto;
     }
     #authorInfoModal img {
       max-width: 100%;
@@ -381,6 +387,32 @@
       width: 74px;
       height: 74px;
       vertical-align: middle;
+    }
+    /* Button with profile picture styles */
+    .btn-with-avatar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-avatar {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .btn-avatar-placeholder {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #4a90e2, #7b68ee);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+      border: 1px solid rgba(255,255,255,0.3);
     }
     #commentsContainer {
       background: #f0f8ff;
@@ -2493,6 +2525,9 @@
           updateUserStatusBar();
           detailsPanel.classList.remove("edit-mode");
           detailsPanel.classList.add("view-mode");
+          
+          // Reset buttons to default state
+          resetButtonsToDefault();
         }
       } catch(err){
         alert("Logout failed: " + err);
@@ -2524,6 +2559,9 @@
           fetchSampleCounts(user);
           detailsPanel.classList.remove("edit-mode");
           detailsPanel.classList.add("view-mode");
+          
+          // Fetch user profile info and update buttons with profile picture
+          updateButtonsWithProfile(user);
         } else {
           alert("View error: " + (data.message || "Unknown"));
         }
@@ -2531,6 +2569,88 @@
         alert("Failed to view user's data: " + err);
       }
     }
+    
+    // Function to update buttons with user profile picture when viewing public collection
+    async function updateButtonsWithProfile(username) {
+      try {
+        const resp = await fetch("/publicinfo/" + encodeURIComponent(username), {credentials:"include"});
+        const data = await resp.json();
+        
+        if(data.status === "success") {
+          // Update Author Info button
+          const authorInfoBtn = document.getElementById("viewOwnerInfoBtn");
+          const profileImageUrl = data.profile_image_url;
+          const displayName = data.display_name || username;
+          const userInitials = displayName.split(' ').map(word => word.charAt(0).toUpperCase()).slice(0, 2).join('');
+          
+          // Create avatar element
+          let avatarElement;
+          if (profileImageUrl) {
+            avatarElement = `<img src="${profileImageUrl}" class="btn-avatar" alt="${displayName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="btn-avatar-placeholder" style="display:none;">${userInitials}</div>`;
+          } else {
+            avatarElement = `<div class="btn-avatar-placeholder">${userInitials}</div>`;
+          }
+          
+          // Update button content
+          authorInfoBtn.innerHTML = `${avatarElement} ${displayName} Info`;
+          authorInfoBtn.className = 'btn-with-avatar';
+          
+          // Also update the View button to show it's viewing this user
+          const viewBtn = document.getElementById("viewBtn");
+          const viewInput = document.getElementById("viewUsernameInput");
+          viewInput.value = `Viewing: ${displayName}`;
+          viewInput.disabled = true;
+          viewBtn.innerHTML = `${avatarElement} Switch User`;
+          viewBtn.className = 'btn-with-avatar';
+          
+          // Add click handler to switch user
+          viewBtn.onclick = function() {
+            viewInput.disabled = false;
+            viewInput.value = '';
+            viewInput.placeholder = 'View user (public)';
+            viewBtn.innerHTML = 'View';
+            viewBtn.className = '';
+            viewBtn.onclick = null;
+            
+            // Reset to logged in user view if available
+            if (loggedInUser) {
+              isViewingPublic = false;
+              viewedUser = null;
+              isLoggedIn = true;
+              updateUserStatusBar();
+              detailsPanel.classList.remove("view-mode");
+              detailsPanel.classList.add("edit-mode");
+              
+              // Restore original button content
+              authorInfoBtn.innerHTML = 'Author Info';
+              authorInfoBtn.className = '';
+            }
+          };
+        }
+      } catch (err) {
+        console.error("Failed to fetch user profile for buttons:", err);
+      }
+    }
+    
+    // Function to reset buttons to default state
+    function resetButtonsToDefault() {
+      const authorInfoBtn = document.getElementById("viewOwnerInfoBtn");
+      const viewBtn = document.getElementById("viewBtn");
+      const viewInput = document.getElementById("viewUsernameInput");
+      
+      authorInfoBtn.innerHTML = 'Author Info';
+      authorInfoBtn.className = '';
+      
+      viewBtn.innerHTML = 'View';
+      viewBtn.className = '';
+      viewBtn.onclick = null;
+      
+      viewInput.disabled = false;
+      viewInput.value = '';
+      viewInput.placeholder = 'View user (public)';
+    }
+    
     // New function to view a user's profile info (used when clicking a comment username or Author Info)
     async function viewUserProfile(username) {
       try {

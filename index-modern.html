@@ -1141,6 +1141,9 @@
     </div>
   </div>
 
+  <!-- Include elements data -->
+  <script src="elementsData.js"></script>
+  
   <script>
     // Global variables and state
     let selectedElementId = null;
@@ -1151,111 +1154,8 @@
     let isGalleryView = false;
     let isDarkMode = false;
 
-    // Element data array (complete periodic table)
-    const elements = [
-      {
-        atomicNumber: 1,
-        symbol: "H",
-        name: "Hydrogen",
-        category: "nonmetal",
-        group: 1,
-        period: 1,
-        atomicMass: 1.008,
-        briefDesc: "The lightest element, fuel for stars"
-      },
-      {
-        atomicNumber: 2,
-        symbol: "He",
-        name: "Helium",
-        category: "noble gas",
-        group: 18,
-        period: 1,
-        atomicMass: 4.002602,
-        briefDesc: "Inert gas, used in balloons and cooling"
-      },
-      {
-        atomicNumber: 3,
-        symbol: "Li",
-        name: "Lithium",
-        category: "alkali metal",
-        group: 1,
-        period: 2,
-        atomicMass: 6.94,
-        briefDesc: "Lightest metal, used in batteries"
-      },
-      {
-        atomicNumber: 4,
-        symbol: "Be",
-        name: "Beryllium",
-        category: "alkaline earth metal",
-        group: 2,
-        period: 2,
-        atomicMass: 9.0121831,
-        briefDesc: "Light, strong metal used in aerospace"
-      },
-      {
-        atomicNumber: 5,
-        symbol: "B",
-        name: "Boron",
-        category: "metalloid",
-        group: 13,
-        period: 2,
-        atomicMass: 10.81,
-        briefDesc: "Hard metalloid used in glass and ceramics"
-      },
-      {
-        atomicNumber: 6,
-        symbol: "C",
-        name: "Carbon",
-        category: "nonmetal",
-        group: 14,
-        period: 2,
-        atomicMass: 12.011,
-        briefDesc: "Essential for all life, forms diamonds and graphite"
-      },
-      // Add more elements as needed for full periodic table
-      // For brevity, adding key elements
-      {
-        atomicNumber: 26,
-        symbol: "Fe",
-        name: "Iron",
-        category: "transition metal",
-        group: 8,
-        period: 4,
-        atomicMass: 55.845,
-        briefDesc: "Most common element on Earth, essential for life"
-      },
-      {
-        atomicNumber: 29,
-        symbol: "Cu",
-        name: "Copper",
-        category: "transition metal",
-        group: 11,
-        period: 4,
-        atomicMass: 63.546,
-        briefDesc: "Excellent conductor, used in wiring and plumbing"
-      },
-      {
-        atomicNumber: 47,
-        symbol: "Ag",
-        name: "Silver",
-        category: "transition metal",
-        group: 11,
-        period: 5,
-        atomicMass: 107.8682,
-        briefDesc: "Precious metal with highest electrical conductivity"
-      },
-      {
-        atomicNumber: 79,
-        symbol: "Au",
-        name: "Gold",
-        category: "transition metal",
-        group: 11,
-        period: 6,
-        atomicMass: 196.966569,
-        briefDesc: "Noble metal, symbol of wealth and beauty"
-      }
-    ];
+    // Use the elements data from elementsData.js
+    const elements = elementsData;
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', function() {

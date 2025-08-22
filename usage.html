@@ -14,6 +14,27 @@
       font-family: "Segoe UI", Tahoma, Arial, sans-serif;
       text-align: center;
     }
+    /* Menu Bar */
+    #menuBar {
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-weight: bold;
+      font-style: italic;
+      background: #474747;
+      color: #fff;
+      text-align: center;
+    }
+    #menuBar a {
+      margin-right: 10px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    #menuBar a:hover {
+      color: #ffcc00;
+    }
     .page-container {
       max-width: 800px;
       margin: 40px auto;
@@ -57,129 +78,219 @@
     <div id="topBanner">
       <img src="/static/guidebanner.png" alt="Usage Guide Banner">
     </div>
-    <h1>PeriodicChiCubo - Usage Guide</h1>
+    
+    <!-- Menu Bar -->
+    <div id="menuBar">
+      <a href="/">Main</a>
+      <a href="/list">User Directory</a>
+      <a href="/profile">Profile Settings</a>
+      <a href="/about">About</a>
+      <a href="/usage">Usage Guide</a>
+      <a href="/media">Media Library</a>
+      <a href="/changelog">Changelog</a>
+    </div>
+
+    <h1>PeriodicTracker - Complete Usage Guide</h1>
     <p>
-      Welcome to <strong>PeriodicChiCubo</strong>—your all-in-one platform for managing your personal elemental collection! This guide will walk you through every feature of the website.
+      Welcome to <strong>PeriodicTracker</strong>—your comprehensive platform for managing and showcasing your elemental collection! This guide covers all features and workflows.
     </p>
-    <h2>1. Getting Started</h2>
+
+    <h2>🚀 Quick Start</h2>
+    <h3>Account Creation & Login</h3>
     <ul>
-      <li>
-        <strong>Login/Registration:</strong> At the top of the main page you will find fields for username and password. Enter your desired credentials and click “Login &amp; Load.” If you are new, your account is created automatically.
+      <li><strong>New Users:</strong> Enter a username and password, click "Login & Load" - your account is created automatically</li>
+      <li><strong>Returning Users:</strong> Enter your credentials and click "Login & Load"</li>
+      <li><strong>Auto-Save:</strong> Use Ctrl+S keyboard shortcut to quickly save changes</li>
+      <li><strong>Session Status:</strong> Your login status is shown in the user status bar</li>
+    </ul>
+
+    <h2>📊 The Interactive Periodic Table</h2>
+    <h3>Basic Navigation</h3>
+    <ul>
+      <li><strong>Element Hover:</strong> Hover over any element to see its name, atomic number, and brief description</li>
+      <li><strong>Element Selection:</strong> Click any element to open its detailed editing panel</li>
+      <li><strong>Visual Status:</strong> Elements are color-coded by status:
+        <ul>
+          <li>🟢 <strong>Pure</strong> - Light green background</li>
+          <li>🟡 <strong>Representative</strong> - Light red background</li>
+          <li>🔵 <strong>Alloy</strong> - Light blue background</li>
+          <li>🟡 <strong>Wish</strong> - Light yellow background</li>
+        </ul>
       </li>
-      <li>
-        Once logged in, your username is displayed and your personal data is loaded. You can also update your profile later on the “Profile Settings” page.
+      <li><strong>Collection Badges:</strong> Elements show small badges for sample count (green) and comment count (red)</li>
+    </ul>
+
+    <h3>Quick Status Mode</h3>
+    <ul>
+      <li><strong>Enable:</strong> Check the "Quick Status" checkbox</li>
+      <li><strong>Select Status:</strong> Choose Pure, Representative, Alloy, or Wish from dropdown</li>
+      <li><strong>Apply:</strong> Click any element to instantly assign the selected status</li>
+      <li><strong>Bulk Updates:</strong> Perfect for quickly categorizing multiple elements</li>
+    </ul>
+
+    <h3>Gallery View</h3>
+    <ul>
+      <li><strong>Toggle:</strong> Check "Gallery View" to display element images as cell backgrounds</li>
+      <li><strong>Visual Preview:</strong> See your collection images directly on the periodic table</li>
+      <li><strong>Hover Info:</strong> Element details still available on hover</li>
+    </ul>
+
+    <h3>Sticky Table Mode</h3>
+    <ul>
+      <li><strong>Activate:</strong> Click "Stick Table" button to fix the periodic table position</li>
+      <li><strong>Benefits:</strong> Table stays visible while scrolling through details</li>
+      <li><strong>Toggle:</strong> Click again to return to normal scrolling</li>
+    </ul>
+
+    <h2>🔧 Element Details & Editing</h2>
+    <h3>Element Information Panel</h3>
+    <p>When you click an element, the right panel shows detailed information and editing options:</p>
+    <ul>
+      <li><strong>Status:</strong> Set as Pure, Representative, Alloy, or Wish</li>
+      <li><strong>Description:</strong> Add personal notes about your sample</li>
+      <li><strong>Quantity:</strong> Record amount in grams (supports decimals)</li>
+      <li><strong>Purity:</strong> Set purity percentage (0-100%)</li>
+    </ul>
+
+    <h3>Image Management</h3>
+    <ul>
+      <li><strong>URL Method:</strong> Paste image URL and click "Set URL"</li>
+      <li><strong>File Upload:</strong> Choose local file (max 2MB) and click "Upload"</li>
+      <li><strong>Preview:</strong> Images appear in preview area and are clickable for full-size view</li>
+      <li><strong>Gallery Integration:</strong> Images automatically appear in Gallery View mode</li>
+    </ul>
+
+    <h2>📷 Sample Management System</h2>
+    <h3>Adding Samples</h3>
+    <ul>
+      <li><strong>Multiple Views:</strong> Add various angles, forms, or states of the same element</li>
+      <li><strong>Add Sample:</strong> Click "Add Sample" button in element details</li>
+      <li><strong>Sample Details:</strong> Each sample can have its own status, description, quantity, and purity</li>
+      <li><strong>Image Options:</strong> Use URL or upload file for each sample</li>
+    </ul>
+
+    <h3>Sample Organization</h3>
+    <ul>
+      <li><strong>Thumbnail View:</strong> Sample images display as clickable thumbnails</li>
+      <li><strong>Edit/Delete:</strong> Use Edit and Delete buttons for your own samples</li>
+      <li><strong>Status Tracking:</strong> Samples can have different statuses than the main element</li>
+      <li><strong>Detailed Records:</strong> Track quantity and purity for each individual sample</li>
+    </ul>
+
+    <h2>💬 Community & Comments</h2>
+    <h3>Commenting System</h3>
+    <ul>
+      <li><strong>Element Discussion:</strong> Comment on any element to share knowledge or ask questions</li>
+      <li><strong>Inline Login:</strong> If not logged in, login form appears directly in comment section</li>
+      <li><strong>User Profiles:</strong> Click usernames in comments to view their profile and achievements</li>
+      <li><strong>Comment Count:</strong> Red badges show comment count on periodic table</li>
+    </ul>
+
+    <h3>User Profiles</h3>
+    <ul>
+      <li><strong>Profile Popup:</strong> Clicking usernames shows bio, stats, and achievements</li>
+      <li><strong>Collection Stats:</strong> View others' Pure, Representative, and Alloy counts</li>
+      <li><strong>Achievement Display:</strong> See badges earned by community members</li>
+    </ul>
+
+    <h2>👥 User Directory & Community</h2>
+    <h3>Browse Collections</h3>
+    <ul>
+      <li><strong>Public Listings:</strong> View all users who made their collections public</li>
+      <li><strong>Clickable Usernames:</strong> Click any username to view their full collection</li>
+      <li><strong>Hover Info:</strong> Hover over usernames for quick profile preview with bio and stats</li>
+      <li><strong>Achievement Badges:</strong> See badges under collector names:
+        <ul>
+          <li>💯 <strong>Century Club</strong> - 100+ elements</li>
+          <li>🧪 <strong>Pure Master</strong> - 50+ pure elements</li>
+          <li>⭐ <strong>Representative Expert</strong> - 30+ representative elements</li>
+          <li>🔗 <strong>Alloy Specialist</strong> - 20+ alloy elements</li>
+          <li>🎯 <strong>Diversified Collector</strong> - Has all three types</li>
+        </ul>
       </li>
     </ul>
-    
-    <h2>2. The Periodic Table Interface</h2>
+
+    <h3>View Modes</h3>
     <ul>
-      <li>
-        The main page displays an interactive periodic table. Each element is represented by its symbol; hover over an element to see its name and a brief description.
-      </li>
-      <li>
-        <strong>Click an Element:</strong> Clicking an element opens its details panel where you can update its status (such as Pure, Representative, Alloy, or Wish), add descriptions, and upload an image.
-      </li>
-      <li>
-        Use the <em>Quick Status</em> mode (toggle checkbox and dropdown) to quickly assign a status without opening the details panel.
-      </li>
-      <li>
-        You can also enable the <em>Gallery View</em> to display element images as backgrounds on the table.
-      </li>
+      <li><strong>Table View:</strong> Compact list with statistics</li>
+      <li><strong>Gallery View:</strong> Card-based layout with detailed stats</li>
+      <li><strong>Sorting:</strong> Users automatically sorted by total element count</li>
     </ul>
-    
-    <h2>3. Editing Your Collection</h2>
+
+    <h2>👤 Profile & Account Management</h2>
+    <h3>Profile Settings</h3>
     <ul>
-      <li>
-        In the details panel, you can update an element’s <strong>status</strong>, <strong>description</strong>, <strong>quantity</strong> (in grams), and <strong>purity</strong> (in percentage).
-      </li>
-      <li>
-        You can upload an image for an element either by entering an image URL or by using the file upload (max ~2MB). The image will appear in the preview area and is clickable to view full size.
-      </li>
+      <li><strong>Display Name:</strong> Set public name (different from username)</li>
+      <li><strong>Email:</strong> For updates and notifications</li>
+      <li><strong>Bio:</strong> Personal description shown in profile popups</li>
+      <li><strong>Profile Image:</strong> Upload profile picture (max 2MB)</li>
+      <li><strong>Privacy:</strong> Toggle public listing in User Directory</li>
     </ul>
-    
-    <h2>4. Managing Samples</h2>
+
+    <h3>Account Security</h3>
     <ul>
-      <li>
-        For each element, you may add <strong>sample images</strong>—for example, close-up photos or different views. In the samples section of an element’s details panel, click “Add Sample” to open the sample form.
-      </li>
-      <li>
-        In the sample form, specify the sample’s status, description, quantity, purity, and either an image URL or upload a sample image file. Sample images appear to the left of the text and are clickable.
-      </li>
-      <li>
-        If you have previously added samples, Edit and Delete buttons appear next to each sample (visible only to you). Use these to update or remove samples.
-      </li>
+      <li><strong>Password Change:</strong> Update password with current/new password verification</li>
+      <li><strong>Session Management:</strong> Secure login/logout functionality</li>
     </ul>
-    
-    <h2>5. Comments</h2>
+
+    <h2>📁 Media Library</h2>
+    <h3>File Management</h3>
     <ul>
-      <li>
-        You can post comments on any element. The comment section is always visible.
-      </li>
-      <li>
-        <strong>Important:</strong> To post a comment you must be logged in. If you are not logged in, an inline login form appears right in the comment section.
-      </li>
-      <li>
-        Once logged in, you can type your comment and click “Post Comment.” In the comments list, non‑"Guest" usernames are clickable. Clicking a username opens their public profile info (which shows their collection stats and achievements).
-      </li>
+      <li><strong>View All Media:</strong> See all your uploaded images in one place</li>
+      <li><strong>File Information:</strong> View file sizes and names</li>
+      <li><strong>Delete Files:</strong> Remove unused images to free space</li>
+      <li><strong>Usage Tracking:</strong> Identify which images are in use</li>
     </ul>
-    
-    <h2>6. Profile &amp; Settings</h2>
+
+    <h2>🔗 Public Collection Viewing</h2>
+    <h3>View Others' Collections</h3>
     <ul>
-      <li>
-        The “Profile Settings” page allows you to update your display name, email, bio, and profile image. You can also change your password here.
-      </li>
-      <li>
-        Your public profile (accessible by other users) displays your achievements and collection statistics (the counts of Pure, Representative, and Alloy statuses).
-      </li>
+      <li><strong>Username Entry:</strong> Enter any public username in "View user" field</li>
+      <li><strong>Direct Links:</strong> Share URLs like <code>/?view=username</code></li>
+      <li><strong>View Mode:</strong> Interface switches to read-only mode showing their collection</li>
+      <li><strong>Full Access:</strong> See their elements, samples, and comments</li>
+      <li><strong>Profile Integration:</strong> View their profile info via "Author Info" button</li>
     </ul>
-    
-    <h2>7. Media Library</h2>
+
+    <h2>⌨️ Keyboard Shortcuts</h2>
     <ul>
-      <li>
-        The “Media Library” page shows all your uploaded images. You can view, delete, and manage your media files.
-      </li>
+      <li><strong>Ctrl+S:</strong> Quick save your collection</li>
+      <li><strong>Esc:</strong> Close open modals or dialogs</li>
     </ul>
-    
-    <h2>8. User Directory &amp; Changelog</h2>
+
+    <h2>📱 Mobile & Responsive Design</h2>
     <ul>
-      <li>
-        The “User Directory” page lists all public profiles along with summary statistics for each user’s collection.
-      </li>
-      <li>
-        The “Changelog” page provides a history of updates and improvements to the website.
-      </li>
+      <li><strong>Touch Friendly:</strong> Optimized touch targets for mobile devices</li>
+      <li><strong>Responsive Layout:</strong> Adapts to tablet and phone screen sizes</li>
+      <li><strong>Mobile Forms:</strong> Prevents zoom on iOS with proper input sizing</li>
+      <li><strong>Touch Interactions:</strong> Proper touch feedback and gestures</li>
     </ul>
-    
-    <h2>9. Additional Features</h2>
+
+    <h2>🎯 Tips for Best Experience</h2>
     <ul>
-      <li>
-        <strong>Achievements:</strong> As you add or update your collection, you earn badges (e.g. “All Alkali Metals”, “All Noble Gases”, “First 10 Elements”) that are displayed in your public profile.
-      </li>
-      <li>
-        <strong>Sticky Periodic Table:</strong> Use the “Stick Table” button to fix the periodic table on the screen while you scroll.
-      </li>
-      <li>
-        <strong>Gallery View:</strong> Toggle gallery view to have your element images displayed as backgrounds on the table.
-      </li>
+      <li><strong>Regular Saves:</strong> Use Ctrl+S frequently to save progress</li>
+      <li><strong>Image Quality:</strong> Use clear, well-lit photos for best results</li>
+      <li><strong>Descriptions:</strong> Add detailed notes for future reference</li>
+      <li><strong>Community:</strong> Engage with comments to learn from other collectors</li>
+      <li><strong>Public Profile:</strong> Enable public listing to connect with community</li>
+      <li><strong>Achievement Hunting:</strong> Aim for badges to gamify your collecting</li>
     </ul>
-    
-    <h2>10. Navigation</h2>
+
+    <h2>🆘 Troubleshooting</h2>
     <ul>
-      <li>
-        Use the top menu links to navigate between pages: User Directory, Profile Settings, About, Usage Guide, Media Library, and Changelog.
-      </li>
-      <li>
-        Click “Go Back to Main” at the bottom of this page to return to the main periodic table interface.
-      </li>
+      <li><strong>Login Issues:</strong> Ensure username/password are correct</li>
+      <li><strong>Upload Problems:</strong> Check file size (max 2MB) and format</li>
+      <li><strong>Save Failures:</strong> Try logging out and back in</li>
+      <li><strong>Display Issues:</strong> Refresh page or clear browser cache</li>
     </ul>
-    
-    <p>
-      <a href="/">Go Back to Main</a>
+
+    <p style="margin-top: 30px;">
+      <a href="/">← Return to Periodic Table</a>
     </p>
-    
-    <h3>Need Help?</h3>
+
+    <h3>Need More Help?</h3>
     <p>
-      For further assistance or feedback, please contact the site administrator or check out our <a href="/changelog">Changelog</a> for recent updates.
+      Check our <a href="/changelog">Changelog</a> for recent updates, visit the <a href="/about">About</a> page for more information, or explore the <a href="/list">User Directory</a> to see how other collectors use the platform.
     </p>
   </div>
 </body>

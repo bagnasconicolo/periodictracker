@@ -68,6 +68,23 @@
       vertical-align: top;
     }
     
+    /* Award badges */
+    .award-badges {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
+    }
+    .achievement-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      background: #fff;
+      display: inline-block;
+    }
+    
     /* User name styling */
     .username-cell {
       position: relative;
@@ -87,27 +104,6 @@
       text-decoration: underline;
     }
     
-    /* Award badges */
-    .award-badges {
-      margin-top: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 4px;
-    }
-    .achievement-badge {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      border: 2px solid #ddd;
-      background: #f9f9f9;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: bold;
-      title: attr(title);
-    }
     
     /* User info popup */
     #userInfoPopup {
@@ -386,31 +382,23 @@
     });
   }
 
-  // Generate award badges based on collection stats
+
+  // Generate award badges based on achievements
   function generateAwardBadges(user) {
     const badges = [];
-    const total = user.total_collected || 0;
-    const pure = user.pure_count || 0;
-    const rep = user.rep_count || 0;
-    const alloy = user.alloy_count || 0;
-
-    // Milestone badges
-    if (total >= 100) badges.push('<span class="achievement-badge" style="background: #ffd700; color: #000;" title="Century Club - 100+ Elements">💯</span>');
-    else if (total >= 50) badges.push('<span class="achievement-badge" style="background: #c0c0c0;" title="Half Century - 50+ Elements">50</span>');
-    else if (total >= 25) badges.push('<span class="achievement-badge" style="background: #cd7f32;" title="Quarter Century - 25+ Elements">25</span>');
-
-    // Purity badges
-    if (pure >= 50) badges.push('<span class="achievement-badge" style="background: #28a745; color: white;" title="Pure Master - 50+ Pure Elements">🧪</span>');
-    else if (pure >= 25) badges.push('<span class="achievement-badge" style="background: #20c997; color: white;" title="Pure Collector - 25+ Pure Elements">⚗️</span>');
-
-    // Representative badges  
-    if (rep >= 30) badges.push('<span class="achievement-badge" style="background: #ffc107; color: #000;" title="Representative Expert - 30+ Representative Elements">⭐</span>');
-
-    // Alloy badges
-    if (alloy >= 20) badges.push('<span class="achievement-badge" style="background: #17a2b8; color: white;" title="Alloy Specialist - 20+ Alloy Elements">🔗</span>');
-
-    // Special badges
-    if (pure > 0 && rep > 0 && alloy > 0) badges.push('<span class="achievement-badge" style="background: #6f42c1; color: white;" title="Diversified Collector">🎯</span>');
+    const achievements = user.achievements || [];
+    
+    achievements.forEach(badgeName => {
+      const icon = {
+        "All Alkali Metals": "/static/achv_alkali.png",
+        "All Noble Gases": "/static/achv_nobles.png",
+        "First 10 Elements": "/static/achv_first10.png"
+      }[badgeName];
+      
+      if (icon) {
+        badges.push(`<img src="${icon}" class="achievement-badge" title="${badgeName}" alt="${badgeName}">`);
+      }
+    });
     
     return badges.join('');
   }

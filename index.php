@@ -220,13 +220,23 @@ if ($method==='GET' && $request_uri === '/api/listusers') {
             if($row['status'] === 'Alloy') $alloy++;
         }
         $total = $pure + $rep + $alloy;
+        
+        // Get achievements
+        $achSt = $pdo->prepare("SELECT badge_name FROM achievements WHERE user_id=?");
+        $achSt->execute([$uid]);
+        $achievements = [];
+        while($achRow = $achSt->fetch(PDO::FETCH_ASSOC)){
+            $achievements[] = $achRow['badge_name'];
+        }
+        
         $users[] = [
           "username" => $u['username'],
           "display_name" => $u['display_name'],
           "pure_count" => $pure,
           "rep_count"  => $rep,
           "alloy_count"=> $alloy,
-          "total_collected" => $total
+          "total_collected" => $total,
+          "achievements" => $achievements
         ];
     }
     echo json_encode(["status" => "success", "users" => $users]);

@@ -558,6 +558,17 @@
       // Modal functionality
       document.getElementById('imageModal').addEventListener('click', closeModal);
       document.querySelector('.close-modal').addEventListener('click', closeModal);
+      
+      // Close popup when clicking outside
+      document.addEventListener('click', function(event) {
+        const popup = document.getElementById('userInfoPopup');
+        const target = event.target;
+        
+        // Don't close if clicking inside popup or on user info button
+        if (!popup.contains(target) && !target.closest('.btn-info')) {
+          hideUserPopup();
+        }
+      });
     });
 
     async function performSearch() {
@@ -803,36 +814,47 @@
 
     // User info popup functionality
     async function showUserInfo(event, username) {
+      console.log('showUserInfo called with username:', username);
+      
       try {
-        const response = await fetch(`/api/user/${username}`);
+        const response = await fetch(`/publicinfo/${username}`);
+        console.log('API response status:', response.status);
         const data = await response.json();
+        console.log('API response data:', data);
         
         if (data.status === 'success') {
-          const user = data.user;
+          const stats = data.collection_stats || {};
           const popup = document.getElementById('userInfoPopup');
           const content = document.getElementById('userInfoContent');
           
           content.innerHTML = `
-            <h3>${user.display_name || user.username}</h3>
-            <p><strong>Username:</strong> @${user.username}</p>
-            ${user.bio ? `<p><strong>Bio:</strong> ${user.bio}</p>` : ''}
-            ${user.profile_image_url ? `<img src="${user.profile_image_url}" alt="Profile" style="max-width: 150px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;">` : ''}
+            <h3>${data.display_name || username}</h3>
+            <p><strong>Username:</strong> @${username}</p>
+            ${data.bio ? `<p><strong>Bio:</strong> ${data.bio}</p>` : ''}
+            ${data.profile_image_url ? `<img src="${data.profile_image_url}" alt="Profile" style="max-width: 150px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;">` : ''}
             <div style="margin-top: 10px;">
               <strong>Collection Stats:</strong><br>
-              🧪 Pure: ${user.pure_count || 0}<br>
-              ⭐ Representative: ${user.rep_count || 0}<br>
-              🔗 Alloy: ${user.alloy_count || 0}<br>
-              📊 Total: ${user.total_collected || 0}
+              🧪 Pure: ${stats.pure_count || 0}<br>
+              ⭐ Representative: ${stats.rep_count || 0}<br>
+              🔗 Alloy: ${stats.alloy_count || 0}<br>
+              📊 Total: ${stats.total_collected || 0}
             </div>
           `;
           
-          popup.style.left = event.pageX + 10 + 'px';
-          popup.style.top = event.pageY + 10 + 'px';
+          // Better positioning - ensure it's visible on screen
+          const rect = event.target.getBoundingClientRect();
+          popup.style.left = Math.min(rect.left + window.scrollX + 10, window.innerWidth - 420) + 'px';
+          popup.style.top = (rect.bottom + window.scrollY + 5) + 'px';
           popup.style.display = 'block';
+          
+          console.log('Popup should be visible now');
+        } else {
+          console.error('API error:', data.message);
+          alert('Error loading user info: ' + (data.message || 'Unknown error'));
         }
       } catch (err) {
         console.error('Failed to load user info:', err);
-        alert('Failed to load user information');
+        alert('Failed to load user information: ' + err.message);
       }
     }
 

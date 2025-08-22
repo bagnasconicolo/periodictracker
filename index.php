@@ -45,6 +45,9 @@ if ($method==='GET') {
     } elseif ($request_uri==='/usage') {
         readfile("usage.html");
         exit;
+    } elseif ($request_uri==='/search') {
+        readfile("search.html");
+        exit;
     } elseif ($request_uri==='/media') {
         readfile("media.html");
         exit;

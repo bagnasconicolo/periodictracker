@@ -244,7 +244,83 @@ if ($method==='GET' && $request_uri === '/api/listusers') {
 }
 
 /**************************************************************
- * 6) PROTECTED ROUTES (must be logged in):
+ * 6) /api/search?element=SYMBOL => search element across all public collections
+ **************************************************************/
+if ($method==='GET' && parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) === '/api/search') {
+    $query_params = [];
+    parse_str(parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY), $query_params);
+    $element_symbol = strtoupper($query_params['element'] ?? '');
+    
+    if (empty($element_symbol)) {
+        http_response_code(400);
+        echo json_encode(["status" => "error", "message" => "Element parameter required"]);
+        exit;
+    }
+    
+    $results = [];
+    
+    // Get all public users who have this element
+    $stmt = $pdo->prepare("
+        SELECT u.id, u.username, u.display_name, s.status, s.description, s.image_url, s.quantity, s.purity
+        FROM users u 
+        JOIN statuses s ON u.id = s.user_id 
+        WHERE u.public_listed = 1 AND s.symbol = ? AND s.status != ''
+        ORDER BY u.username
+    ");
+    $stmt->execute([$element_symbol]);
+    
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $user_id = $row['id'];
+        
+        // Get secondary samples for this user/element
+        $sample_stmt = $pdo->prepare("
+            SELECT id, status, description, image_url, quantity, purity, created_at
+            FROM samples 
+            WHERE user_id = ? AND symbol = ?
+            ORDER BY created_at ASC
+        ");
+        $sample_stmt->execute([$user_id, $element_symbol]);
+        
+        $samples = [];
+        while($sample = $sample_stmt->fetch(PDO::FETCH_ASSOC)) {
+            $samples[] = [
+                'id' => $sample['id'],
+                'status' => $sample['status'],
+                'description' => $sample['description'],
+                'image_url' => $sample['image_url'],
+                'quantity' => $sample['quantity'],
+                'purity' => $sample['purity'],
+                'created_at' => $sample['created_at']
+            ];
+        }
+        
+        $results[] = [
+            'user_id' => $user_id,
+            'username' => $row['username'],
+            'display_name' => $row['display_name'],
+            'main_sample' => [
+                'status' => $row['status'],
+                'description' => $row['description'],
+                'image_url' => $row['image_url'],
+                'quantity' => $row['quantity'],
+                'purity' => $row['purity']
+            ],
+            'secondary_samples' => $samples,
+            'total_samples' => count($samples) + 1 // +1 for main sample
+        ];
+    }
+    
+    echo json_encode([
+        "status" => "success", 
+        "element" => $element_symbol,
+        "results" => $results,
+        "total_collections" => count($results)
+    ]);
+    exit;
+}
+
+/**************************************************************
+ * 7) PROTECTED ROUTES (must be logged in):
  *   - /user (GET/POST)
  *   - /upload/{symbol} (POST)
  *   - /uploadSample/{symbol} (POST) for sample images

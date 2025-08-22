@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Element Search - PeriodicTracker</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100vh;
+      box-sizing: border-box;
+      background: linear-gradient(135deg, #fdfdfd 0%, #e8f0fd 100%);
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      text-align: center;
+    }
+    
+    /* Menu Bar */
+    #menuBar {
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-weight: bold;
+      font-style: italic;
+      background: #474747;
+      color: #fff;
+      text-align: center;
+    }
+    #menuBar a {
+      margin-right: 10px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    #menuBar a:hover {
+      color: #ffcc00;
+    }
+    
+    .page-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    
+    #topBanner img {
+      max-width: 100%;
+      border-radius: 4px;
+    }
+    
+    h1 {
+      margin-top: 0;
+      color: #333;
+    }
+    
+    /* Search Section */
+    .search-section {
+      margin: 30px 0;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 6px;
+    }
+    
+    .search-form {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    #elementInput {
+      padding: 10px 15px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      width: 200px;
+      text-transform: uppercase;
+    }
+    
+    #searchBtn {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+    
+    #searchBtn:hover {
+      background: #0056b3;
+    }
+    
+    #searchBtn:disabled {
+      background: #6c757d;
+      cursor: not-allowed;
+    }
+    
+    /* View Toggle */
+    .view-toggle {
+      margin: 20px 0;
+    }
+    
+    .toggle-btn {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0 5px;
+      transition: background 0.2s;
+    }
+    
+    .toggle-btn:hover {
+      background: #5a6268;
+    }
+    
+    .toggle-btn.active {
+      background: #28a745;
+    }
+    
+    /* Results Section */
+    .results-info {
+      margin: 20px 0;
+      padding: 15px;
+      background: #e9ecef;
+      border-radius: 4px;
+      display: none;
+    }
+    
+    .loading {
+      display: none;
+      margin: 20px 0;
+      font-style: italic;
+      color: #666;
+    }
+    
+    /* List View Styles */
+    .list-view {
+      display: none;
+    }
+    
+    .collection-item {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      background: #fff;
+      overflow: hidden;
+    }
+    
+    .collection-header {
+      background: #f8f9fa;
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .collector-info h3 {
+      margin: 0;
+      color: #007bff;
+    }
+    
+    .collector-info .username {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .sample-count {
+      background: #17a2b8;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+    
+    .samples-container {
+      padding: 15px;
+    }
+    
+    .sample-item {
+      border: 1px solid #e9ecef;
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background: #fafafa;
+    }
+    
+    .sample-item.main-sample {
+      border-left: 4px solid #28a745;
+      background: #f8fff8;
+    }
+    
+    .sample-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .sample-status {
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    
+    .status-pure { background: #d4edda; color: #155724; }
+    .status-representative { background: #fff3cd; color: #856404; }
+    .status-alloy { background: #d1ecf1; color: #0c5460; }
+    .status-wish { background: #f8d7da; color: #721c24; }
+    
+    .sample-details {
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+    }
+    
+    .sample-image {
+      width: 120px;
+      height: 120px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    .sample-image:hover {
+      transform: scale(1.05);
+    }
+    
+    .no-image {
+      width: 120px;
+      height: 120px;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      font-size: 12px;
+      border-radius: 4px;
+    }
+    
+    .sample-info {
+      flex: 1;
+    }
+    
+    .sample-description {
+      margin-bottom: 10px;
+      line-height: 1.4;
+      color: #333;
+    }
+    
+    .sample-specs {
+      display: flex;
+      gap: 15px;
+      font-size: 14px;
+    }
+    
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .spec-label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+    }
+    
+    .spec-value {
+      font-weight: bold;
+      color: #333;
+    }
+    
+    /* Gallery View Styles */
+    .gallery-view {
+      display: none;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .gallery-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .gallery-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .gallery-header {
+      padding: 15px;
+      background: #f8f9fa;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+    
+    .gallery-header h4 {
+      margin: 0;
+      color: #007bff;
+    }
+    
+    .gallery-samples {
+      padding: 15px;
+    }
+    
+    .gallery-sample {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    
+    .gallery-sample:last-child {
+      margin-bottom: 0;
+    }
+    
+    .gallery-image {
+      width: 100%;
+      max-width: 200px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    
+    .gallery-image:hover {
+      opacity: 0.8;
+    }
+    
+    .gallery-no-image {
+      width: 100%;
+      max-width: 200px;
+      height: 150px;
+      background: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    
+    .gallery-sample-info {
+      font-size: 14px;
+    }
+    
+    /* Modal for full-size images */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      cursor: pointer;
+    }
+    
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 90%;
+      max-height: 90%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .close-modal:hover {
+      opacity: 0.6;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .search-form {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      #elementInput {
+        width: 100%;
+        max-width: 250px;
+      }
+      
+      .sample-details {
+        flex-direction: column;
+      }
+      
+      .sample-image, .no-image {
+        width: 100%;
+        max-width: 200px;
+        margin: 0 auto 15px auto;
+      }
+    }
+    
+    a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div id="topBanner">
+      <img src="/static/searchbanner.png" alt="Element Search Banner">
+    </div>
+
+    <!-- Menu Bar -->
+    <div id="menuBar">
+      <a href="/">Main</a>
+      <a href="/list">User Directory</a>
+      <a href="/profile">Profile Settings</a>
+      <a href="/about">About</a>
+      <a href="/usage">Usage Guide</a>
+      <a href="/search">Element Search</a>
+      <a href="/media">Media Library</a>
+      <a href="/changelog">Changelog</a>
+    </div>
+
+    <h1>Element Search</h1>
+    <p>Search for a specific element across all public collections to see different samples and variations.</p>
+
+    <!-- Search Section -->
+    <div class="search-section">
+      <div class="search-form">
+        <input type="text" id="elementInput" placeholder="Enter element symbol (e.g., AU)" maxlength="3">
+        <button id="searchBtn">Search Collections</button>
+      </div>
+      
+      <div class="loading" id="loading">🔍 Searching collections...</div>
+      
+      <div class="results-info" id="resultsInfo">
+        <strong id="resultCount"></strong>
+      </div>
+      
+      <!-- View Toggle -->
+      <div class="view-toggle" id="viewToggle" style="display: none;">
+        <button class="toggle-btn active" id="listViewBtn">List View</button>
+        <button class="toggle-btn" id="galleryViewBtn">Gallery View</button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="list-view" id="listView"></div>
+    <div class="gallery-view" id="galleryView"></div>
+
+    <p style="margin-top: 30px;">
+      <a href="/">← Back to Main</a>
+    </p>
+  </div>
+
+  <!-- Image Modal -->
+  <div id="imageModal" class="modal">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modalImage">
+  </div>
+
+  <script>
+    let currentResults = [];
+    let isListView = true;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('searchBtn').addEventListener('click', performSearch);
+      document.getElementById('elementInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          performSearch();
+        }
+      });
+      
+      document.getElementById('listViewBtn').addEventListener('click', () => toggleView(true));
+      document.getElementById('galleryViewBtn').addEventListener('click', () => toggleView(false));
+      
+      // Modal functionality
+      document.getElementById('imageModal').addEventListener('click', closeModal);
+      document.querySelector('.close-modal').addEventListener('click', closeModal);
+    });
+
+    async function performSearch() {
+      const element = document.getElementById('elementInput').value.trim().toUpperCase();
+      
+      if (!element) {
+        alert('Please enter an element symbol');
+        return;
+      }
+      
+      if (element.length < 1 || element.length > 3) {
+        alert('Please enter a valid element symbol (1-3 characters)');
+        return;
+      }
+
+      const searchBtn = document.getElementById('searchBtn');
+      const loading = document.getElementById('loading');
+      const resultsInfo = document.getElementById('resultsInfo');
+      const viewToggle = document.getElementById('viewToggle');
+
+      // Show loading
+      searchBtn.disabled = true;
+      loading.style.display = 'block';
+      resultsInfo.style.display = 'none';
+      viewToggle.style.display = 'none';
+      clearResults();
+
+      try {
+        const response = await fetch(`/api/search?element=${encodeURIComponent(element)}`);
+        const data = await response.json();
+
+        if (data.status === 'success') {
+          currentResults = data.results;
+          
+          // Show results info
+          const resultCount = document.getElementById('resultCount');
+          resultCount.textContent = `Found ${data.total_collections} collection(s) with ${data.element}`;
+          resultsInfo.style.display = 'block';
+          
+          if (data.total_collections > 0) {
+            viewToggle.style.display = 'block';
+            renderResults();
+          } else {
+            document.getElementById('listView').innerHTML = '<p style="text-align: center; color: #666; margin: 40px 0;">No public collections found for this element.</p>';
+            document.getElementById('listView').style.display = 'block';
+          }
+        } else {
+          alert('Search error: ' + (data.message || 'Unknown error'));
+        }
+      } catch (error) {
+        console.error('Search failed:', error);
+        alert('Search request failed. Please try again.');
+      } finally {
+        searchBtn.disabled = false;
+        loading.style.display = 'none';
+      }
+    }
+
+    function toggleView(showList) {
+      isListView = showList;
+      
+      const listView = document.getElementById('listView');
+      const galleryView = document.getElementById('galleryView');
+      const listBtn = document.getElementById('listViewBtn');
+      const galleryBtn = document.getElementById('galleryViewBtn');
+      
+      if (showList) {
+        listView.style.display = 'block';
+        galleryView.style.display = 'none';
+        listBtn.classList.add('active');
+        galleryBtn.classList.remove('active');
+      } else {
+        listView.style.display = 'none';
+        galleryView.style.display = 'grid';
+        listBtn.classList.remove('active');
+        galleryBtn.classList.add('active');
+      }
+      
+      renderResults();
+    }
+
+    function renderResults() {
+      if (isListView) {
+        renderListView();
+      } else {
+        renderGalleryView();
+      }
+    }
+
+    function renderListView() {
+      const container = document.getElementById('listView');
+      container.innerHTML = '';
+      
+      currentResults.forEach(collection => {
+        const collectionDiv = document.createElement('div');
+        collectionDiv.className = 'collection-item';
+        
+        collectionDiv.innerHTML = `
+          <div class="collection-header">
+            <div class="collector-info">
+              <h3>${collection.display_name || collection.username}</h3>
+              <div class="username">@${collection.username}</div>
+            </div>
+            <div class="sample-count">${collection.total_samples} sample${collection.total_samples !== 1 ? 's' : ''}</div>
+          </div>
+          <div class="samples-container">
+            ${renderMainSample(collection.main_sample)}
+            ${collection.secondary_samples.map(sample => renderSecondarySample(sample)).join('')}
+          </div>
+        `;
+        
+        container.appendChild(collectionDiv);
+      });
+    }
+
+    function renderGalleryView() {
+      const container = document.getElementById('galleryView');
+      container.innerHTML = '';
+      
+      currentResults.forEach(collection => {
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'gallery-card';
+        
+        const allSamples = [
+          { ...collection.main_sample, isMain: true },
+          ...collection.secondary_samples.map(s => ({ ...s, isMain: false }))
+        ];
+        
+        cardDiv.innerHTML = `
+          <div class="gallery-header">
+            <h4>${collection.display_name || collection.username}</h4>
+            <div class="username">@${collection.username}</div>
+          </div>
+          <div class="gallery-samples">
+            ${allSamples.map(sample => renderGallerySample(sample)).join('')}
+          </div>
+        `;
+        
+        container.appendChild(cardDiv);
+      });
+    }
+
+    function renderMainSample(sample) {
+      return `
+        <div class="sample-item main-sample">
+          <div class="sample-header">
+            <span class="sample-status status-${sample.status.toLowerCase()}">Main ${sample.status}</span>
+            <small style="color: #28a745; font-weight: bold;">Primary Sample</small>
+          </div>
+          <div class="sample-details">
+            ${renderSampleImage(sample.image_url)}
+            <div class="sample-info">
+              ${sample.description ? `<div class="sample-description">${sample.description}</div>` : ''}
+              <div class="sample-specs">
+                ${sample.quantity ? `<div class="spec-item"><span class="spec-label">Quantity</span><span class="spec-value">${sample.quantity}g</span></div>` : ''}
+                ${sample.purity ? `<div class="spec-item"><span class="spec-label">Purity</span><span class="spec-value">${sample.purity}%</span></div>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSecondarySample(sample) {
+      return `
+        <div class="sample-item">
+          <div class="sample-header">
+            <span class="sample-status status-${sample.status.toLowerCase()}">${sample.status}</span>
+            <small style="color: #666;">Added ${new Date(sample.created_at).toLocaleDateString()}</small>
+          </div>
+          <div class="sample-details">
+            ${renderSampleImage(sample.image_url)}
+            <div class="sample-info">
+              ${sample.description ? `<div class="sample-description">${sample.description}</div>` : ''}
+              <div class="sample-specs">
+                ${sample.quantity ? `<div class="spec-item"><span class="spec-label">Quantity</span><span class="spec-value">${sample.quantity}g</span></div>` : ''}
+                ${sample.purity ? `<div class="spec-item"><span class="spec-label">Purity</span><span class="spec-value">${sample.purity}%</span></div>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderGallerySample(sample) {
+      return `
+        <div class="gallery-sample">
+          ${renderGalleryImage(sample.image_url)}
+          <div class="gallery-sample-info">
+            <div class="sample-status status-${sample.status.toLowerCase()}" style="display: inline-block; margin-bottom: 5px;">
+              ${sample.isMain ? 'Main ' : ''}${sample.status}
+            </div>
+            ${sample.description ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">${sample.description}</div>` : ''}
+            <div style="font-size: 12px; color: #333;">
+              ${sample.quantity ? `${sample.quantity}g ` : ''}${sample.purity ? `(${sample.purity}%)` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSampleImage(imageUrl) {
+      if (imageUrl) {
+        return `<img src="${imageUrl}" class="sample-image" onclick="showFullImage('${imageUrl}')" alt="Element sample">`;
+      } else {
+        return '<div class="no-image">No Image</div>';
+      }
+    }
+
+    function renderGalleryImage(imageUrl) {
+      if (imageUrl) {
+        return `<img src="${imageUrl}" class="gallery-image" onclick="showFullImage('${imageUrl}')" alt="Element sample">`;
+      } else {
+        return '<div class="gallery-no-image">No Image</div>';
+      }
+    }
+
+    function showFullImage(imageUrl) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      modal.style.display = 'block';
+      modalImg.src = imageUrl;
+    }
+
+    function closeModal() {
+      document.getElementById('imageModal').style.display = 'none';
+    }
+
+    function clearResults() {
+      document.getElementById('listView').innerHTML = '';
+      document.getElementById('galleryView').innerHTML = '';
+      document.getElementById('listView').style.display = 'none';
+      document.getElementById('galleryView').style.display = 'none';
+    }
+
+    // Auto-focus search input
+    document.getElementById('elementInput').focus();
+  </script>
+</body>
+</html>

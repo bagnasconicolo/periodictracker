@@ -97,10 +97,43 @@
     a:hover {
       text-decoration: underline;
     }
+    /* Menu Bar */
+    #menuBar {
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-weight: bold;
+      font-style: italic;
+      background: #474747;
+      color: #fff;
+      text-align: center;
+    }
+    #menuBar a {
+      margin-right: 10px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    #menuBar a:hover {
+      color: #ffcc00;
+    }
   </style>
 </head>
 <body>
   <div class="page-container">
+    <!-- Menu Bar -->
+    <div id="menuBar">
+      <a href="/">Main</a>
+      <a href="/list">User Directory</a>
+      <a href="/profile">Profile Settings</a>
+      <a href="/about">About</a>
+      <a href="/usage">Usage Guide</a>
+      <a href="/search">Element Search</a>
+      <a href="/media">Media Library</a>
+      <a href="/changelog">Changelog</a>
+    </div>
+
     <h1>User Media Library</h1>
     <p>Manage images you have uploaded. (Requires an active session; log in below or on main page.)</p>
 
